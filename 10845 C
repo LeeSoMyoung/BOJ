@@ -1,0 +1,36 @@
+
+//백준 알고리즘 10845 C언어
+
+/*큐를 구현하기 위한 알고리즘
+큐는 입력은 뒤로, 출력은 앞으로 받는 길이가 유한한 저장체계
+push이면 정수를 추가로 입력 받음*/
+
+#include <stdio.h>
+#include <string.h>
+
+char cmd[10]; //입력될 
+int input;
+int n;
+int queue[10000]; //큐를 구현할 배열 선언
+int front=-1,rear=-1;
+
+int main(void){
+    scanf("%d",&n); getchar();
+    while(n--){
+        scanf("%s",cmd);
+        getchar();
+        if(!strcmp(cmd,"push")){
+            scanf("%d",&input);
+            queue[++rear]=input;
+        }
+        if(!strcmp(cmd,"empty")) puts(front==rear?"1":"0");
+        if(!strcmp(cmd,"front")) printf(front==rear?"-1\n":"%d\n",queue[front+1]);
+        if(!strcmp(cmd,"size")) printf(front==rear?"0\n":"%d\n",rear-front);
+        if(!strcmp(cmd,"pop")){
+            printf(front==rear?"-1\n":"%d\n",queue[front+1]);
+            if(front!=rear) ++front;
+        }
+        if(!strcmp(cmd,"back")) printf(front==rear?"-1\n":"%d\n",queue[rear]);
+    }
+    return 0;
+}
