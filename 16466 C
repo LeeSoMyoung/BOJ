@@ -1,0 +1,25 @@
+
+// 백준 알고리즘 16466 C언어
+
+#include <stdio.h>
+#include <stdbool.h>
+
+int n;
+int a;
+int min=1;
+bool check[2500000];
+
+int main(void){
+    scanf("%d",&n);
+    while(n--){
+        scanf("%d",&a);
+        check[a]=true;
+        if(a==min){
+            while(check[min]==true){
+                ++min;
+            }
+        }
+    }
+    printf("%d\n",min);
+    return 0;
+}
