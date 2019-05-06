@@ -1,0 +1,29 @@
+
+// 백준 알고리즘 10828 C언어
+
+#include <stdio.h>
+#include <string.h>
+int n;
+char cmd[7];
+int top=-1;
+int input;
+int stack[1000];
+int main(void){
+    scanf("%d",&n);
+    getchar();
+    while(n--){
+        scanf("%s",cmd);
+        if(!strcmp(cmd,"push")){
+            scanf("%d",&input);
+            stack[++top]=input;
+        }
+        if(!strcmp(cmd,"pop")){
+            printf(top==-1?"-1\n":"%d\n",stack[top]);
+            top==-1?top-=0:--top;
+        }
+        if(!strcmp(cmd,"size")) printf("%d\n",top+1);
+        if(!strcmp(cmd,"empty")) puts(top==-1?"1":"0");
+        if(!strcmp(cmd,"top")) printf(top==-1?"-1\n":"%d\n",stack[top]);
+    }
+    return 0;
+}
