@@ -1,0 +1,45 @@
+
+// 백준 알고리즘 15181 답(via JAVA)
+
+import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+
+public class Main{
+    public static void main(String[] args) throws IOException{
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(System.out));
+        String music;
+        int l,i,difference;
+        boolean beautiful;
+        while(true){
+            music=br.readLine(); //input을 입력받는다.
+            if(music.equals("#")){ //#만 입력되면 클래스를 종료한다.
+                bw.flush();
+                bw.close();
+                br.close();
+                return;
+            }
+            l=music.length(); // input의 길이
+            beautiful=true; // 조건을 만족하는지 안 하는지 구별해주는 역할
+            for(i=0;i<l-1;++i){
+                difference=music.charAt(i+1)-music.charAt(i);
+                if(difference>=0){
+                    if(!(difference==2||difference==4||difference==6)){
+                        beautiful=false;
+                        break;
+                    } //만약 조건을 만족하지 않으면 논리연산자를 false로 세팅하고 루프문 탈출
+                }
+                else{
+                    if(!(difference==-3||difference==-1||difference==-5)){
+                        beautiful=false;
+                        break;
+                    } //마찬가지.
+                }
+            }
+            bw.write(beautiful==true?"That music is beautiful.\n":"Ouch! That hurts my ears.\n"); //논리 연산자가 false이면(루프문이 돌아갈 때 조건을 만족 안 했으면) 거짓일 때의 출력문 출력.
+        }
+    }
+}
