@@ -1,0 +1,41 @@
+
+// 백준 알고리즘 11294번 JAVA
+
+import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+
+public class Main{
+    public static void main(String[] args) throws IOException{
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(System.out));
+        String description;
+        int digit;
+        int input;
+        int index;
+        int i;
+        char f[]=new char[5001];
+        while(true){
+            description=br.readLine();
+            if(description.equals("#")){ //#이 입력되면 클래스를 종료시킴.
+                bw.flush();
+                bw.close();
+                br.close();
+                return;
+            }
+            index=0;
+            digit=Integer.parseInt(br.readLine()); //몇 진수로 바꿀 것인지 입력함
+            input=Integer.parseInt(br.readLine()); //digit진수로 바꿀 수를 입력함.
+            bw.write(description+", "+input+", ");
+            while(input>0){
+                if(input%digit<10) f[index++]=(char)(input%digit+'0'); //나머지가 10미만이면 그대로 배열에 저장
+                else f[index++]=(char)(input%digit-10+'A'); //나머지가 10이상이면 알파벳 대문자로 저장(10은 A로 11은 B로 등등)
+                input/=digit;
+            }
+            for(i=index-1;i>=0;--i) bw.write(f[i]); //뒤에서부터 
+            bw.write('\n');
+        }
+    }
+}
