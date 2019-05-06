@@ -1,0 +1,35 @@
+
+
+// 백준 알고리즘 10989 JAVA
+//수를 정렬 / 메모리 조건 때문에 까다로움.
+
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.BufferedWriter;
+import java.io.BufferedReader;
+import java.io.IOException;
+
+public class Main{
+    public static void main(String[] args) throws IOException{
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(System.out));
+        int n=Integer.parseInt(br.readLine());
+        boolean check[]=new boolean[10005]; // 가장 메모리를 적게 차지하는 boolean형으로 그 수가 존재하는지 안 하는지 체크
+        int number[]=new int[10005]; // 만약 그 수가 존재한다면, 그 수가 몇 개나 존재하는지 체크하는 용도
+        int x;
+        for(int i=0;i<n;++i){
+            x=Integer.parseInt(br.readLine());
+            check[x]=true;
+            ++number[x];
+        }
+        for(int i=1;i<=10000;++i){
+            if(check[i]==true){
+                for(int j=0;j<number[i];++j) bw.write(i+"\n");
+            }
+        }
+        bw.flush();
+        br.close();
+        bw.close();
+        return;
+    }
+}
