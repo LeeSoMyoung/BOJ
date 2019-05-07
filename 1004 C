@@ -1,0 +1,32 @@
+//백준 알고리즘 1004 C언어
+
+#include <stdio.h>
+#include <math.h>
+int T;
+int x1, y1, x2, y2;
+int n;
+int cx, cy, r;
+double get_distance(int X1, int Y1, int X2, int Y2) {
+	double d;
+	d = sqrt(pow(X1 - X2, 2) + pow(Y2 - Y1, 2));
+	return d;
+}
+int main(void) {
+	scanf("%d", &T);
+	int i, j;
+  double d1, d2;
+	for (i = 0; i < T; ++i) {
+		int x = 0;
+		scanf("%d%d%d%d", &x1, &y1, &x2, &y2);
+		scanf("%d", &n);
+		for (j = 0; j < n; ++j) {
+			scanf("%d%d%d", &cx, &cy, &r);
+			d1 = get_distance(x1, y1, cx, cy);
+			d2 = get_distance(x2, y2, cx, cy);
+			if (d1<r&&d2>r) ++x;
+			else if (d1 > r&&d2 < r) ++x;
+		}
+		printf("%d\n", x);
+	}
+	return 0;
+}
