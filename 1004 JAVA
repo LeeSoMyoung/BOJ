@@ -1,0 +1,28 @@
+
+// 백준 알고리즘 1004번 JAVA
+
+import java.util.*;
+import java.math.*;
+public class Main{
+    public static void main(String[] args){
+        Scanner in=new Scanner(System.in);
+        int T,x1,y1,x2,y2,cx,cy,r,n;
+        int x;
+        int i,j,k;
+        double d1,d2;
+        T=in.nextInt();
+        for(i=0;i<T;++i){
+            x1=in.nextInt();y1=in.nextInt();
+            x2=in.nextInt();y2=in.nextInt();
+            n=in.nextInt();x=0;
+            for(j=0;j<n;++j){
+             cx=in.nextInt();cy=in.nextInt();r=in.nextInt();
+                d1=Math.sqrt(Math.pow(x1-cx,2)+Math.pow(y1-cy,2));
+                d2=Math.sqrt(Math.pow(x2-cx,2)+Math.pow(y2-cy,2));
+                if(d1<r&&d2>r) ++x;
+                if(d1>r&&d2<r) ++x;
+            }
+            System.out.println(x);
+        }
+    }
+}
