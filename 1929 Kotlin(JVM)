@@ -1,0 +1,26 @@
+
+// 백준 알고리즘 1929 소수 구하기
+
+import java.util.Scanner
+
+fun main(args:Array<String>){
+    val sc=Scanner(System.`in`)
+    var a:Int
+    var b:Int
+    a=sc.nextInt()
+    b=sc.nextInt()
+    var isNotPrime=Array<Boolean>(b+1){false}
+    isNotPrime[1]=true
+    for (i in 1..b){
+        if(isNotPrime[i]==false){
+        for(j in 2*i..b step i){
+            isNotPrime[j]=true
+        }
+        }
+    }
+    for (i in a..b){
+        if(isNotPrime[i]==false){
+            println(i)
+        }
+    }
+}
