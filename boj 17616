@@ -1,0 +1,60 @@
+
+// C++ | 백준 17616 - 등수 찾기
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <iostream>
+#include <vector>
+#include <queue>
+#define REP(i,a,b) for(int i=a;i<b;++i)
+#define FOR(i,N) REP(i,0,N)
+using namespace std;
+
+int high_bfs(vector<vector<int>>&high, int x,int N) {
+	int now,rank=0;
+	queue<int>q;
+	vector<bool>visited(N+1, false);
+	q.push(x);
+	visited[x] = true;
+	while (!q.empty()) {
+		now = q.front();
+		q.pop();
+		for (int next : high[now]) 
+			if (!visited[next]) {
+				++rank;
+				visited[next] = true;
+				q.push(next);
+			}
+	}
+	return rank;
+}
+int low_bfs(vector<vector<int>>&low, int x,int N) {
+	int now, rank = 0;
+	queue<int>q;
+	vector<bool>visited(N+1, false);
+	q.push(x);
+	visited[x] = true;
+	while (!q.empty()) {
+		now = q.front(); q.pop();
+		for(int next:low[now])
+			if (!visited[next]) {
+				visited[next] = true;
+				q.push(next);
+				++rank;
+			}
+	}
+	return rank;
+}
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int N, M, X, u, v, high, low;
+	vector<vector<int>>higher, lower;
+	cin >> N >> M >> X;
+	higher.resize(N + 1); lower.resize(N + 1);
+	while (M--) {
+		cin >> u >> v;
+		higher[v].push_back(u);
+		lower[u].push_back(v);
+	}
+	cout << 1+high_bfs(higher, X,N) << ' ' << N-low_bfs(lower, X,N) << '\n';
+	return 0;
+}
