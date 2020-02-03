@@ -1,0 +1,26 @@
+
+// 백준 알고리즘 11060 점프 점프
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <iostream>
+#include <vector>
+#define PLUS 101
+#define REP(i,a,b) for(int i=a;i<b;++i)
+using namespace std;
+
+int min(int a, int b) { return a < b ? a : b; }
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int N;
+	cin >> N;
+	vector<int>arr(N + 1, 0);
+	vector<int>dp(N + PLUS, 1e9);
+	REP(i, 1, N + 1) cin >> arr[i];
+	dp[1] = 0;
+	REP(i, 1, N + 1)
+		REP(j, 1, arr[i] + 1)
+			dp[i + j] = min(dp[i] + 1,dp[i+j]);
+	cout << (dp[N] < 1e9 ? dp[N] : -1) << '\n';
+	return 0;
+}
