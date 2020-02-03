@@ -1,0 +1,101 @@
+
+ // 백준 알고리즘 11097 도시계획
+ 
+ #define _CRT_SECURE_NO_WARNINGS
+
+#include <iostream>
+#include <algorithm>
+#include <string>
+#include <string.h>
+#include <queue>
+#include <vector>
+#include <stack>
+#define MAX 320
+#define REP(i,a,b) for(int i=a;i<b;++i)
+#define FOR(i,N) REP(i,0,N)
+using namespace std;
+typedef pair<int, int> pii;
+
+bool finished[MAX];
+int dfsn[MAX], cnt = 0, sn[MAX], SN = 0,edge[MAX][MAX];
+vector<int> g[MAX];
+stack<int> st;
+int dfs(const int now) {
+	int result, top;
+	st.push(now);
+	dfsn[now] = ++cnt;
+	result = dfsn[now];
+	for (int check : g[now]) {
+		if (!dfsn[check]) result = min(result, dfs(check));
+		else if (!finished[check]) result = min(result, dfsn[check]);
+	}
+	if (result == dfsn[now]) {
+		while (1) {
+			top = st.top();
+			st.pop();
+			finished[top] = 1;
+			sn[top] = SN;
+			if (top == now) break;
+		}
+		++SN;
+	}
+	return result;
+}
+void init(void) {
+	fill(dfsn, dfsn + MAX, 0);
+	fill(finished, finished + MAX, false);
+	fill(sn, sn + MAX, 0);
+	memset(edge, false, sizeof(edge));
+	FOR(i, MAX) g[i].clear();
+	cnt = SN = 0;
+	return;
+}
+int ctoi(char x) { return x - '0'; }
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int TC, M, A, B,size;
+	cin >> TC;
+	while (TC--) {
+		init();
+		queue<int>q;
+		cin >> M;
+		vector<string>str(M);
+		vector<pii>ans;
+		FOR(i, M) cin >> str[i];
+		FOR(i,M)
+			FOR(j, M) {
+			if (i == j) continue;
+			if (ctoi(str[i][j]))
+				g[i+1].push_back(j+1);
+		}
+		REP(i, 1, M + 1) if (!dfsn[i]) dfs(i);
+		vector<vector<int>>scc;
+		scc.resize(SN);
+		REP(now, 1, M + 1) {
+			scc[sn[now]].push_back(now);
+			for (int next : g[now])
+				if ((sn[now] != sn[next])&&!edge[sn[now]][sn[next]]) 
+					edge[sn[now]][sn[next]] = true;
+		}
+		FOR(k, SN) FOR(i, SN) FOR(j, SN)
+			if (edge[i][k] && edge[k][j] && edge[i][j])
+				edge[i][j] = false;
+		for (vector<int>check : scc) {
+			size = check.size();
+			if (size > 1) {
+				FOR(i, size - 1)
+					ans.push_back(pii(check[i], check[i + 1]));
+				ans.push_back(pii(check[size - 1], check[0]));
+			}
+		}
+		FOR(i, SN)
+			FOR(j, SN)
+			if (edge[i][j])
+				ans.push_back(pii(scc[i][0], scc[j][0]));
+		cout << ans.size() << '\n';
+		for (pii print : ans)
+			cout << print.first << ' ' << print.second << '\n';
+		cout << '\n';
+	}
+	return 0;
+}
