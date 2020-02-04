@@ -1,0 +1,83 @@
+
+// 백준 알고리즘 3176 도로 네트워크
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#define REP(i,a,b) for(int i=a;i<b;++i)
+#define FOR(i,N) REP(i,0,N)
+#define MAX 100100
+#define MAX_N 25
+using namespace std;
+//typedef long long int ll;
+typedef pair<int, int> pii;
+
+vector<vector<pii>>adj;
+int min_dist[MAX][MAX_N], dp[MAX][MAX_N], depth[MAX], max_dist[MAX][MAX_N];
+bool visited[MAX];
+void dfs(int now, int level) {
+	visited[now] = true;
+	depth[now] = level;
+	for (pii next : adj[now]) {
+		if (visited[next.first]) continue;
+		dfs(next.first, level + 1);
+		dp[next.first][0] = now;
+		min_dist[next.first][0] = next.second;
+		max_dist[next.first][0] = next.second;
+	}
+	return;
+}
+pii LCA(int a, int b) {
+	if (depth[a] < depth[b]) swap(a, b);
+	int diff = depth[a] - depth[b],Min=1e9,Max=-1;
+	for (int i = 0; i < MAX_N; ++i)
+		if (diff & (1 << i)) {
+			Min = min(Min,min_dist[a][i]);
+			Max = max(Max, max_dist[a][i]);
+			a = dp[a][i];
+		}
+	if (a == b) return pii(Min, Max);
+		for (int i = 20; i >= 0; --i)
+			if (dp[a][i] && dp[a][i] != dp[b][i]) {
+				Min = min(Min,min(min_dist[a][i], min_dist[b][i]));
+				Max = max(Max,max(max_dist[b][i], max_dist[a][i]));
+				a = dp[a][i];
+				b = dp[b][i];
+			}
+		//a = dp[a][0];
+		Min = min(Min, min(min_dist[a][0],min_dist[b][0]));
+		Max = max(Max, max(max_dist[a][0],max_dist[b][0]));
+	return pii(Min, Max);
+}
+void getParents(int N) {
+	REP(i, 1, MAX_N)
+		REP(j, 1, N + 1) {
+		dp[j][i] = dp[dp[j][i - 1]][i - 1];
+		min_dist[j][i] = min(min_dist[dp[j][i - 1]][i - 1], min_dist[j][i - 1]);
+		max_dist[j][i] = max(max_dist[dp[j][i - 1]][i - 1], max_dist[j][i - 1]);
+	}
+	return;
+}
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int N, M, u, v, w;
+	pii ans;
+	cin >> N;
+	adj.resize(N + 1);
+	FOR(i, N - 1) {
+		cin >> u >> v >> w;
+		adj[u].push_back(pii(v,  w));
+		adj[v].push_back(pii(u,  w));
+	}
+	dfs(1, 1);
+	getParents(N);
+	cin >> M;
+	while (M--) {
+		cin >> u >> v;
+		ans = LCA(u, v);
+		cout << ans.first << ' ' << ans.second << '\n';
+	}
+	return 0;
+}
