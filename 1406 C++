@@ -1,0 +1,57 @@
+
+// BOJ 에디터 1406 C++
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define FOR(i,N) for(int i=0;i<N;++i)
+using namespace std;
+
+string reverse(string &x) {
+	int len = x.size();
+	string ans = "";
+	for (int i = len - 1; i >= 0; --i)
+		ans += x[i];
+	return ans;
+}
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	string str,ans="";
+	int N;
+	char cmd,x;
+	stack<char>st, tmp;
+	cin >> str >> N;
+	FOR(i, str.size()) st.push(str[i]);
+	while (N--) {
+		cin >> cmd;
+		if (cmd == 'P') {
+			cin >> x;
+			st.push(x);
+		}
+		else if (cmd == 'B') {
+			if (!st.empty()) st.pop();
+		}
+		else if (cmd == 'L') {
+			if (!st.empty()) {
+				tmp.push(st.top());
+				st.pop();
+			}
+		}
+		else {
+			if (!tmp.empty()) {
+				st.push(tmp.top());
+				tmp.pop();
+			}
+		}
+	}
+	while (!tmp.empty()) {
+		st.push(tmp.top());
+		tmp.pop();
+	}
+	while (!st.empty()) {
+		ans += st.top();
+		st.pop();
+	}
+	cout << reverse(ans) << '\n';
+	return 0;
+}
