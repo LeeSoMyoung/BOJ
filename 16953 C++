@@ -1,0 +1,41 @@
+
+// 백준 16953 A->B
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <iostream>
+#include <queue>
+#include <map>
+#define FOR(i,N) for(int i=0;i<N;++i)
+using namespace std;
+typedef long long int ll;
+map<ll, int> m;
+
+int bfs(ll N, ll target) {
+	int cnt = 1;
+	ll now;
+	int size;
+	queue<ll>q;
+	q.push(N);
+	while (!q.empty()) {
+		size = q.size();
+		FOR(i, size) {
+			now = q.front(); q.pop();
+			if (now == target) return cnt;
+			if (now*10+1<=1e9&&m.find(now * 10 + 1) == m.end())
+				q.push(now * 10 + 1);
+			if (now*2<=1e9&&m.find(now * 2) == m.end())
+				q.push(now * 2);
+		}
+		++cnt;
+	}
+	return -1;
+}
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	ll N, target;
+    
+	cin >> N >> target;
+	cout << bfs(N, target) << '\n';
+	return 0;
+}
