@@ -1,0 +1,59 @@
+
+// 백준 5397 C++ 키로거
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <iostream>
+#include <stack>
+#include <string>
+#define FOR(i,N) for(int i=0;i<N;++i)
+using namespace std;
+
+string reverse(string& str) {
+	string ans = "";
+	int len = str.size();
+	for (int i = len - 1; i >= 0; --i)
+		ans += str[i];
+	return ans;
+}
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int TC;
+	string str;
+	cin >> TC;
+	while (TC--) {
+		cin >> str;
+		stack<char>st;
+		stack<char>tmp;
+		string pw = "";
+		int length = str.size();
+		FOR(i, length) {
+			if (str[i] == '-') {
+				if (!st.empty()) st.pop();
+			}
+			else if (str[i] == '<') {
+				if (!st.empty()) {
+					tmp.push(st.top());
+					st.pop();
+				}
+			}
+			else if (str[i] == '>') {
+				if (!tmp.empty()) {
+					st.push(tmp.top());
+					tmp.pop();
+				}
+			}
+			else st.push(str[i]);
+		}
+		while (!tmp.empty()) {
+			st.push(tmp.top());
+			tmp.pop();
+		}
+		while (!st.empty()) {
+			pw += st.top();
+			st.pop();
+		}
+		cout << reverse(pw) << '\n';
+	}
+	return 0;
+}
