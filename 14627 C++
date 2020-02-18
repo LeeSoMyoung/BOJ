@@ -1,0 +1,39 @@
+
+// 백준 알고리즘 14627 파닭파닭
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define REP(i,a,b) for(int i=a;i<b;++i)
+#define FOR(i,N) REP(i,0,N)
+using namespace std;
+typedef long long int ll;
+typedef vector<ll> vi;
+
+ll binary_search(vi& arr, int N, int K) {
+	ll start = 0, mid, end = 2147483648, cnt;
+	while (start <= end) {
+		cnt = 0;
+		mid = (start + end) >> 1;
+		FOR(i, N) cnt += arr[i] / mid;
+		if (cnt >= K) start = mid + 1;
+		else end = mid - 1;
+	}
+	return end;
+}
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int N, K;
+	ll p, ans = 0, sum = 0;
+	vi arr;
+	cin >> N >> K;
+	arr.resize(N);
+	FOR(i, N) {
+		cin >> arr[i];
+		sum += arr[i];
+	}
+	p = binary_search(arr, N, K);
+    ans=sum-p*K;
+	cout << ans << '\n';
+	return 0;
+}
