@@ -1,0 +1,32 @@
+
+// BOJ 16863 Score!
+
+#include <bits/stdc++.h>
+
+int toSecond(int min, int sec) { return min * 60 + sec; }
+int main(void) {
+	int N, H = 0, A = 0, m, s, score, prev = 0, tA = 0, tH = 0, now;
+	char winner = '-', team, preTeam = '-';
+	scanf("%d", &N);
+	while (N--) {
+		scanf(" %c %d %d:%d", &team, &score, &m, &s);
+		if (team == 'A') A += score;
+		else H += score;
+		winner = A > H ? 'A' : (H > A ? 'H' : '-');
+		now = toSecond(m, s);
+		if (preTeam != winner) {
+			if (preTeam == '-') preTeam = winner;
+			else if (preTeam == 'A') tA += now - prev;
+			else tH += now - prev;
+			prev = now;
+		}
+		preTeam = winner;
+	}
+	now = toSecond(32, 00);
+	if (preTeam == 'A')
+		tA += now - prev;
+	else if (preTeam == 'H')
+		tH += now - prev;
+	printf("%c %d:%02d %d:%02d\n", winner, tH / 60, tH % 60, tA / 60, tA % 60);
+	return 0;
+}
