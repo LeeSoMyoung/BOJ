@@ -1,0 +1,32 @@
+
+// BOJ 1806 부분합 : 투 포인터 
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define REP(i,a,b) for(int i=a;i<b;++i)
+#define FOR(i,N) REP(i,0,N)
+using namespace std;
+typedef vector<int> vi;
+
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int INF = numeric_limits<int>::max(), ans = INF, start = 0, rear = 0, N, S, sum = 0, len = 0;
+	cin >> N >> S;
+	vi arr(N);
+	FOR(i, N) cin >> arr[i];
+	while (1) {
+		if (sum >= S) {
+			ans = min(ans, len);
+			sum -= arr[start++];
+			--len;
+		}
+		else {
+			if (rear == N) break;
+			sum += arr[rear++];
+			++len;
+		}
+	}
+	cout << (ans == INF ? 0 : ans) << '\n';
+	return 0;
+}
