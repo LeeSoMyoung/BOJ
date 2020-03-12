@@ -1,0 +1,48 @@
+
+// BOJ 11143 C++ Beads
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define REP(i,a,b) for(int i=a;i<b;++i)
+#define FOR(i,N) REP(i,0,N)
+#define r(x,n) x.resize(n)
+using namespace std;
+typedef long long int ll;
+typedef vector<ll> vi;
+
+int h = 1;
+void update(int i, ll val,vi& arr) {
+	i += h - 1;
+	arr[i] += val;
+	while (i > 1) {
+		i /= 2;
+		arr[i] = arr[i * 2 + 1] + arr[i * 2];
+	}
+	return;
+}
+ll query(int L, int R, int nodeNum, int nodeL, int nodeR,vi&arr) {
+	if (L <= nodeL && nodeR <= R) return arr[nodeNum];
+	else if (nodeR<L || nodeL>R) return 0;
+	ll mid = (nodeL + nodeR) >> 1;
+	return query(L, R, nodeNum * 2, nodeL, mid,arr) + query(L, R, nodeNum * 2 + 1, mid + 1, nodeR,arr);
+}
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int TC, B, P, Q, cnt,a,b;
+	char cmd;
+	cin >> TC;
+	while (TC--) {
+		h = 1;
+		cin >> B >> P >> Q;
+		while (B > h) h <<= 1;
+		vi seg(2*h,0);
+		cnt = P + Q;
+		while (cnt--) {
+			cin >> cmd >> a >> b;
+			if (cmd == 'P') update(a, b*1LL, seg);
+			else cout << query(a, b, 1, 1, h, seg) << '\n';
+		}
+	}
+	return 0;
+}
