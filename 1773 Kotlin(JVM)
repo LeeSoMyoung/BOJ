@@ -1,0 +1,23 @@
+
+// BOJ 1773 폭죽쇼 Kotlin(JVM)
+
+import java.util.Scanner
+
+fun main(args:Array<String>){
+    val sc=Scanner(System.`in`)
+    var N:Int=sc.nextInt()
+    var C:Int=sc.nextInt()
+    var t:Int
+    var ans:Int=0
+    var time=Array<Boolean>(C+1){false}
+    for (i in 1..N){
+        t=sc.nextInt()
+        for (j in 0..C step t){
+            if(time[j]==false&&(j>0)){
+                time[j]=true
+                ans=ans+1
+            }
+        }
+    }
+    println(ans)
+}
