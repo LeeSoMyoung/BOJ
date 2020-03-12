@@ -1,0 +1,22 @@
+
+// BOJ 13171 A Kotlin(JVM)
+
+import java.util.Scanner
+
+fun main(args:Array<String>){
+    val sc=Scanner(System.`in`)
+    val MOD:Long=1000000007
+    val ONE:Long=1
+    var A:Long=sc.nextLong()
+    var X:Long=sc.nextLong()
+    var ans:Long=1;
+    A= A%MOD
+    while(X>0){
+        if(X and ONE==ONE){
+            ans=(ans*A)%MOD
+        }
+        X=X shr 1
+        A=(A*A)%MOD
+    }
+    println(ans)
+}
