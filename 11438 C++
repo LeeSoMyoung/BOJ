@@ -1,0 +1,63 @@
+
+// BOJ 11438 C++ LCA2
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <iostream>
+#include <vector>
+#define MAX 100100
+#define MAX_N 25
+#define REP(i,a,b) for(int i=a;i<b;++i)
+#define FOR(i,N) REP(i,0,N)
+using namespace std;
+
+bool visited[MAX];
+int depth[MAX];
+int dp[MAX][MAX_N];
+vector<vector<int>>adj;
+void dfs(int now, int level) {
+	visited[now] = true;
+	depth[now] = level;
+	for (int next : adj[now]) {
+		if (visited[next]) continue;
+		dfs(next, level + 1);
+		dp[next][0] = now;
+	}
+	return;
+}
+int LCA(int a, int b) {
+	if (depth[a] < depth[b]) swap(a, b);
+	int diff = depth[a] - depth[b];
+	for (int i = 0; i <MAX_N; ++ i)
+		if (diff & (1 << i)) a = dp[a][i];
+	if (a != b) {
+		for(int i=19;i>=0;--i)
+			if (dp[a][i] && dp[a][i] != dp[b][i]) {
+				a = dp[a][i];
+				b = dp[b][i];
+			}
+		a = dp[a][0];
+	}
+	return a;
+}
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int N, M,u,v;
+	cin >> N;
+	adj.resize(N + 1);
+	FOR(i, N-1) {
+		cin >> u>>v;
+		adj[u].push_back(v);
+		adj[v].push_back(u);
+	}
+	dfs(1, 1);
+	for (int i = 1; i <19; ++i)
+		for (int j = 1; j <= N; ++j)
+			dp[j][i] = dp[dp[j][i - 1]][i - 1];
+	cin >> M;
+	while (M--) {
+		cin >> u >> v;
+		cout << LCA(u, v) << '\n';
+	}
+	return 0;
+}
