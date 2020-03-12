@@ -1,0 +1,15 @@
+
+// BOJ 2671 C++ 잠수함 식별
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	string str;
+	cin >> str;
+	regex reg("(100+1+|01)+");
+	smatch m;
+	cout << (regex_match(str,m,reg)?"SUBMARINE":"NOISE") <<'\n';
+	return 0;
+}
