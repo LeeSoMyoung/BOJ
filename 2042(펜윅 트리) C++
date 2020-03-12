@@ -1,0 +1,50 @@
+
+// BOJ 2042 구간 합 구하기(펜윅트리) C++
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <iostream>
+#include <vector>
+#define FOR(i,N) for(int i=1;i<=(N);++i)
+using namespace std;
+typedef long long int ll;
+
+ll sum(int i, vector<ll>&tree) {
+	ll ans = 0;
+	while (i > 0) {
+		ans += tree[i];
+		i -= (i&-i);
+	}
+	return ans;
+}
+void update(int i, ll diff, int N, vector<ll>&tree) {
+	while (i <= N) {
+		tree[i] += diff;
+		i += (i&-i);
+	}
+	return;
+}
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int N, M, K, cmd;
+	ll a, b, x;
+	ll diff;
+	cin >> N >> M >> K;
+	vector<ll>tree(N + 1, 0);
+	vector<ll>arr(N + 1,0);
+	FOR(i, N) {
+		cin >> arr[i];
+		update(i, arr[i], N, tree);
+	}
+	FOR(i, M + K) {
+		cin >> cmd >> a >> b;
+		if (cmd == 1) {
+			diff = b - arr[a];
+			arr[a] = b;
+			update(a, diff, N, tree);
+		}
+		else
+			cout << sum(b, tree) - sum(a - 1, tree) << '\n';
+	}
+	return 0;
+}
