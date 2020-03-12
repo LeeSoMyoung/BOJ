@@ -1,0 +1,55 @@
+
+// BOJ 5675 C++ 음주 코딩
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <stdio.h>
+#include <algorithm>
+#include <vector>
+using namespace std;
+
+int h;
+void update(int i, int val,vector<int> &seg) {
+	int x;
+	i += h - 1;
+	seg[i] = val;
+	while (i/=2) {
+		x = seg[i * 2] * seg[i * 2 + 1];
+		seg[i] = x?(x>0?1:-1):0;
+	}
+}
+int query(int L, int R, int nodeNum, int nodeL, int nodeR,vector<int>&seg) {
+	if (L <= nodeL && nodeR <= R) return seg[nodeNum];
+	else if (nodeR < L || R < nodeL) return 1;
+	int mid = (nodeL + nodeR) / 2;
+	return query(L,R,nodeNum*2,nodeL,mid,seg)*query(L,R,nodeNum*2+1,mid+1,nodeR,seg);
+}
+int main(void) {
+	int N, M,a,b,cnt,input;
+	char cmd;
+	while (scanf("%d %d", &N, &M)!=EOF) {
+		h = 1;
+		while (N > h) h <<= 1;
+		vector<int>seg(2 * h);
+		vector<char>ans;
+		for (int i = 1; i <= N; ++i) {
+			scanf("%d", &input);
+			if (!input) input = 0;
+			else input = input > 0 ? 1 : -1;
+			update(i, input,seg);
+		}
+		while(M--) {
+			scanf(" %c %d %d", &cmd,&a,&b);
+			if (cmd == 'C')
+				update(a, b?(b>0?1:-1):0,seg);
+			else {
+				cnt = query(a, b, 1, 1, h,seg);
+				ans.push_back(cnt ? (cnt > 0 ? '+' : '-') : '0');
+			}
+		}
+		for (char print : ans)
+			printf("%c", print);
+		puts("");
+	}
+	return 0;
+}
