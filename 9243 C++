@@ -1,0 +1,22 @@
+
+// BOJ 9243 C++ 파일 완전 삭제
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define REP(i,a,b) for(int i=a;i<b;++i)
+#define FOR(i,N) REP(i,0,N)
+using namespace std;
+
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int N, len;
+	string str1, str2;
+	cin >> N >> str1 >> str2;
+	len = str1.size();
+	FOR(i, N)
+		FOR(j, len)
+		str1[j] = '1' - str1[j] + '0';
+	cout << (str1 == str2 ? "Deletion succeeded" : "Deletion failed") << '\n';
+	return 0;
+}
