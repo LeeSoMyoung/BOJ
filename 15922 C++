@@ -1,0 +1,35 @@
+
+// BOJ 15922 C++ 아우으 우아으이야!!
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define REP(i,a,b) for(int i=a;i<b;++i)
+#define FOR(i,N) REP(i,0,N)
+#define F first
+#define S second
+using namespace std;
+typedef long long int ll;
+typedef pair<int, int> pii;
+
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int N,start,end;
+	ll ans = 0;
+	cin >> N;
+	pii input;
+	FOR(i,N){
+        cin>>input.F>>input.S;
+        if(!i) start=input.F,end=input.S;
+        else{
+            if(end<input.F){
+                ans+=end-start;
+                start=input.F;end=input.S;
+            }
+            else if(end<input.S) end=input.S;
+        }
+    }
+	ans += end - start;
+	cout << ans << '\n';
+	return 0;
+}
