@@ -1,0 +1,47 @@
+
+// BOJ 1275 C++ 커피숍2
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define REP(i,a,b) for(int i=a;i<b;++i)
+#define FOR(i,N) REP(i,0,N)
+#define r(x,n) x.resize(n)
+using namespace std;
+typedef long long int ll;
+typedef vector<ll> vi;
+
+int h = 1;
+vi arr;
+void update(int i, ll val) {
+	i += h - 1;
+	arr[i] = val;
+	while (i > 1) {
+		i /= 2;
+		arr[i] = arr[i * 2 + 1] + arr[i * 2];
+	}
+	return;
+}
+ll query(int L, int R, int nodeNum, int nodeL, int nodeR) {
+	if (L <= nodeL && nodeR <= R) return arr[nodeNum];
+	else if (nodeR<L || nodeL>R) return 0;
+	ll mid = (nodeL + nodeR) >> 1;
+	return query(L, R, nodeNum * 2, nodeL, mid) + query(L, R, nodeNum * 2 + 1, mid + 1, nodeR);
+}
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int N, Q,x,y,a,b,val;
+	cin >> N >> Q;
+	while (N > h) h <<= 1;
+	r(arr, h * 2);
+	REP(i,1,N+1) {
+		cin >> val;
+		update(i, val*1LL);
+	}
+	while (Q--) {
+		cin >> x >> y >> a >> b;
+		cout << query(min(x, y), max(x, y), 1, 1, h) << '\n';
+		update(a, b * 1LL);
+	}
+	return 0;
+}
