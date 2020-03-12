@@ -1,0 +1,80 @@
+
+// BOJ 8012 C++ 한동이는 영업 사원!
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <iostream>
+#include <vector>
+#define MAX 30100
+#define MAX_N 20
+#define REP(i,a,b) for(int i=a;i<b;++i)
+#define FOR(i,N) REP(i,0,N)
+using namespace std;
+
+bool visited[MAX];
+int dp[MAX][MAX_N];
+int depth[MAX], dist[MAX];
+vector<vector<int>>adj;
+void dfs(int now, int level) {
+	visited[now] = true;
+	depth[now] = level;
+	for (int next : adj[now]) {
+		if (visited[next]) continue;
+		dist[next] = 1 + dist[now];
+		dfs(next, level + 1);
+		dp[next][0] = now;
+	}
+	return;
+}
+void getParents(int N) {
+	REP(i, 1, MAX_N)
+		REP(j, 1, N + 1)
+		dp[j][i] = dp[dp[j][i - 1]][i - 1];
+	return;
+}
+int LCA(int a, int b) {
+	if (depth[a] < depth[b]) swap(a, b);
+	int diff = depth[a] - depth[b];
+	FOR(i, MAX_N)
+		if (diff & (1 << i))
+			a = dp[a][i];
+	if (a != b) {
+		for (int i = MAX_N - 1; i >= 0; --i)
+			if (dp[a][i] && dp[a][i] != dp[b][i]) {
+				a = dp[a][i];
+				b = dp[b][i];
+			}
+		a = dp[a][0];
+	}
+	return a;
+}
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int N, M, u, v, ans=0;
+	cin >> N;
+	adj.resize(N + 1);
+	FOR(i,N-1) {
+		cin >> u >> v;
+		adj[u].push_back(v);
+		adj[v].push_back(u);
+	}
+	dfs(1, 1);
+	getParents(N);
+	cin >> M;
+	u = 0;
+	while (M--) {
+		cin >> v;
+		if (!u) {
+			ans += dist[v];
+			u = v;
+		}
+		else {
+			ans += dist[u] + dist[v] - 2 * dist[LCA(u, v)];
+			u = v;
+		}
+	}
+	cout << ans << '\n';
+	return 0;
+}
