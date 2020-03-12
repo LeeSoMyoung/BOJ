@@ -1,0 +1,44 @@
+
+// BOJ 2042 구간 합 구하기 C++
+
+#include <iostream>
+#include <algorithm>
+#include <vector>
+using namespace std;
+typedef long long int ll;
+
+vector<ll>seg;
+int h=1;
+void update(int i,ll val){
+    i+=h-1;
+    seg[i]=val;
+    while(i>1){
+        i/=2;
+        seg[i]=seg[i*2]+seg[i*2+1];
+    }
+}
+ll query(int L, int R, int nodeNum,int nodeL,int nodeR){
+    if(L<=nodeL&&nodeR<=R) return seg[nodeNum];
+    else if(nodeR<L||R<nodeL) return 0;
+    int mid=(nodeL+nodeR)/2;
+    return query(L,R,nodeNum*2,nodeL,mid)+query(L,R,nodeNum*2+1,mid+1,nodeR);
+}
+int main(void){
+    ios::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+    int N,M,K,a,b;
+    ll x,c;
+    cin>>N>>M>>K;
+    while(N>h) h<<=1;
+    seg.resize(h*2);
+    for(int i=1;i<=N;++i){
+        cin>>x;
+        update(i,x);
+    }
+    for(int i=0;i<M+K;++i){
+        cin>>a>>b>>c;
+        if(a==1)
+            update(b,c);
+        else cout<<query(b,c,1,1,h)<<'\n';
+    }
+    return 0;
+}
