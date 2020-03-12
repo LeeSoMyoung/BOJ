@@ -1,0 +1,32 @@
+
+// BOJ 18291 C++ 비요뜨의 징검다리 건너기
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define REP(i,a,b) for(int i=a;i<b;++i)
+#define FOR(i,N) REP(i,0,N)
+#define square(x) x*x
+using namespace std;
+typedef long long int ll;
+
+int ans(int pos) {
+	const int MOD = 1e9 + 7;
+	ll tmp,temp;
+	pos %= MOD;
+	if (!pos) return 1;
+	tmp = ans(pos / 2) % MOD;
+	temp = square(tmp)%MOD;
+	if (pos % 2) return (temp * 2) % MOD;
+	else return temp % MOD;
+}
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int N,pos; 
+	cin >> N;
+	while (N--) {
+		cin >> pos;
+		cout << (pos==1?1:ans(pos-2)) << '\n';
+	}
+	return 0;
+}
