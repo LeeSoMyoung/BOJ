@@ -1,0 +1,40 @@
+
+// BOJ 3015 오아시스 재결합 C++
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define REP(i,a,b) for(int i=a;i<b;++i)
+#define FOR(i,N) REP(i,0,N)
+#define mp make_pair
+using namespace std;
+typedef long long int ll;
+typedef pair<int, int> pii;
+
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int N,input;
+	pii tmp,top;
+	ll ans = 0;
+	stack<pii>st;
+	cin >> N;
+	while (N--) {
+		cin >> input;
+		tmp = mp(input, 1);
+		while (st.size()) {
+			top = st.top();
+			if (top.first <= input) {
+				ans += (1LL * top.second);
+				if (top.first == input) tmp.second += top.second;
+				st.pop();
+			}
+			else {
+				++ans;
+				break;
+			}
+		}
+		st.push(tmp);
+	}
+	cout << ans << '\n';
+	return 0;
+}
