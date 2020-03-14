@@ -1,0 +1,33 @@
+
+// BOJ 1756 피자굽기 C++
+
+#include <bits/stdc++.h>
+#define REP(i,a,b) for(int i=a;i<b;++i)
+#define FOR(i,N) REP(i,0,N)
+#define get(x,N) FOR(i,N) cin>>x[i]
+using namespace std;
+typedef vector<int> vi;
+
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int D, N,cnt=0,ans=0;
+	bool flag = true;
+	cin >> D >> N;
+	vi oven(D), pizza(N);
+	FOR(i, D) {
+		cin >> oven[i];
+		oven[i] = i&&oven[i] > oven[i - 1] ? oven[i - 1]: oven[i];
+	}
+	get(pizza, N);
+	for (int i = D-1; i >= 0; --i) {
+		if (pizza[cnt] > oven[i]) continue;
+		++cnt;
+		if (cnt >=N) {
+			flag = false;
+			ans = i + 1;
+			break;
+		}
+	}
+	cout << (flag ? 0 : ans) << '\n';
+	return 0;
+}
