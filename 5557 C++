@@ -1,0 +1,28 @@
+
+// BOJ C++ 1학년
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define rep(i,a,b) for(int i=a;i<b;++i)
+#define rep2(i,n) rep(i,0,n)
+#define MAX 110
+using namespace std;
+typedef long long int ll;
+
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int arr[MAX], N;
+	ll dp[MAX][21];
+	memset(dp, 0, sizeof(dp));
+	cin >> N;
+	rep2(i, N) cin >> arr[i];
+	dp[0][arr[0]] = 1;
+	rep(i,1,N-1) rep2(j,21)
+		if (dp[i - 1][j] != 0) {
+			if (j >= arr[i]) dp[i][j - arr[i]] += dp[i - 1][j];
+			if (j + arr[i] <= 20) dp[i][j + arr[i]] += dp[i - 1][j];
+		}
+	cout << dp[N - 2][arr[N-1]] << '\n';
+	return 0;
+}
