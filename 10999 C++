@@ -1,0 +1,71 @@
+
+// BOJ 10999 C++ 구간 합 구하기2
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define REP(i,a,b) for(int i=a;i<b;++i)
+#define FOR(i,N) REP(i,0,N)
+using namespace std;
+typedef long long int ll;
+typedef vector<ll> v;
+
+ll init(v&arr, v&seg, int n, int start, int end) {
+	int mid = start + end >> 1;
+	return seg[n] = start == end ? arr[start] : init(arr, seg, n * 2, start, mid) + init(arr, seg, n * 2 + 1, mid + 1, end);
+}
+void lazy_update(v&seg, v&lazy, int n, int start, int end) {
+	if (lazy[n]) {
+		seg[n] += (end - start + 1)*lazy[n];
+		if (start != end) {
+			lazy[n * 2] += lazy[n];
+			lazy[n * 2 + 1] += lazy[n];
+		}
+		lazy[n] = 0;
+	}
+	return;
+}
+void update(v& seg, v&lazy, int n, int start, int end, int left, int right, ll diff) {
+	lazy_update(seg, lazy, n, start, end);
+	if (left > end || right < start) return;
+	else if (left <= start && end <= right) {
+		seg[n] += (end - start + 1)*diff;
+		if (start != end) {
+			lazy[n * 2] += diff;
+			lazy[n * 2 + 1] += diff;
+		}
+		return;
+	}
+	int mid = start + end >> 1;
+	update(seg, lazy, n * 2, start, mid, left, right, diff);
+	update(seg, lazy, n * 2 + 1, mid + 1, end, left, right, diff);
+	seg[n] = seg[n * 2] + seg[n * 2 + 1];
+	return;
+}
+ll query(v&seg, v&lazy, int n, int start, int end, int left, int right) {
+	lazy_update(seg, lazy, n, start, end);
+	if (left > end || right < start) return 0;
+	else if (left <= start && end <= right) return seg[n];
+	int mid = start + end >> 1;
+	return query(seg, lazy, 2*n,start, mid, left, right) + query(seg, lazy, 2*n+1,mid + 1, end, left, right);
+}
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int N, M, K, Q,a,b,c,d;
+	ll h = 1LL;
+	cin >> N >> M >> K;
+	Q = M + K;
+	while (N > h) h <<= 1;
+	v seg(2 * h), lazy(2 * h),arr(N+1);
+	REP(i, 1, N + 1) cin >> arr[i];
+	init(arr, seg, 1, 1, N);
+	while (Q--) {
+		cin >> a >> b >> c;
+		if (a == 1) {
+			cin >> d;
+			update(seg, lazy, 1, 1, N, b, c, d);
+		}
+		else cout << query(seg, lazy, 1, 1, N, b, c) << '\n';
+	}
+	return 0;
+}
