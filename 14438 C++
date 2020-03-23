@@ -1,0 +1,45 @@
+
+// BOJ 14438 수열과 쿼리 17
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define REP(i,a,b) for(int i=a;i<b;++i)
+#define FOR(i,N) REP(i,0,N)
+using namespace std;
+
+vector<int>seg;
+int h = 1;
+void update(int i, int val) {
+	i += h - 1;
+	seg[i] = val;
+	while (i > 1) {
+		i /= 2;
+		seg[i] = min(seg[i * 2], seg[i * 2 + 1]);
+	}
+	return;
+}
+int query(int L, int R, int num, int left, int right) {
+	if (L <= left && right <= R) return seg[num];
+	else if (right < L || R < left) return numeric_limits<int>::max();
+	int mid = (left + right) >> 1;
+	return min(query(L, R, num * 2, left, mid), query(L, R, num * 2 + 1, mid + 1, right));
+}
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int N, M, val, from, to,cmd;
+	cin >> N;
+	while (N > h) h <<= 1;
+	seg.resize(2 * h, numeric_limits<int>::max());
+	REP(i, 1, N + 1) {
+		cin >> val;
+		update(i, val);
+	}
+	cin >> M;
+	while (M--) {
+		cin >> cmd>>from >> to;
+		if (cmd - 1) cout << query(min(from, to), max(from, to), 1, 1, h) << '\n';
+		else update(from, to);
+	}
+	return 0;
+}
