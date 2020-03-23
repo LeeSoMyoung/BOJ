@@ -1,0 +1,67 @@
+
+// BOJ 5670 C++ 휴대폰 자판
+
+#include <iostream>
+#define MAX 100010
+#define MAX_N 85
+
+using namespace std;
+char arr[MAX][MAX_N];
+bool ini;
+int n,ans,total;
+struct Trie {
+    bool vaild;
+    bool exist;
+    int branch;
+    Trie* node[26];
+    Trie() :vaild(false), exist(false), branch(0) {
+        for (int i = 0; i < 26; i++) node[i] = 0;
+    }
+    ~Trie() {
+        for (int i = 0; i < 26; i++)
+            if (node[i]) delete node[i];
+    }
+    void add(const char* s) {
+        if (*s == 0) vaild = true; 
+        else {
+            int pos = *s - 'a';
+            if (node[pos] == NULL) {
+                branch++; node[pos] = new Trie();
+            }
+            exist = true;
+            node[pos]->add(s + 1);
+        }
+    }
+    void check(const char*s) {
+        if (*s == 0) return;
+        if (ini) {
+            ++ans; ini = false;
+        }
+        else {
+            if (branch >= 2) ans++;
+            else if (vaild) ans++;
+        }
+        int pos = *s - 'a';
+        node[pos]->check(s + 1);
+    }
+};
+int main(void) {
+    size_t i;
+    while (scanf("%d", &n) != EOF) {
+        Trie* root = new Trie;
+        for (i = 0; i < n; ++i) {
+            scanf(" %s", arr[i]);
+            root->add(arr[i]);
+        }
+        total = 0;
+        for (i = 0; i < n; ++i) {
+            ini = true;
+            ans = 0;
+            root->check(arr[i]);
+            total += ans;
+        }
+        printf("%.2lf\n", (double)total / n);
+        delete root;
+    }
+    return 0;
+}
