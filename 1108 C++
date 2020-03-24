@@ -1,0 +1,97 @@
+
+// BOJ 1108 검색 엔진 C++
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <iostream>
+#include <algorithm>
+#include <string>
+#include <map>
+#include <vector>
+#include <queue>
+#include <stack>
+#define MAX 3000
+#define REP(i,a,b) for(int i=a;i<b;++i)
+#define FOR(i,N) REP(i,0,N)
+using namespace std;
+typedef pair<string, int> p;
+typedef long long int ll;
+
+bool finished[MAX];
+int dfsn[MAX], cnt = 0, sn[MAX], SN = 0, in[MAX];
+vector<int> g[MAX];
+stack<int> st;
+int dfs(const int now) {
+	int result, top;
+	st.push(now);
+	dfsn[now] = ++cnt;
+	result = dfsn[now];
+	for (int check : g[now]) {
+		if (!dfsn[check]) result = min(result, dfs(check));
+		else if (!finished[check]) result = min(result, dfsn[check]);
+	}
+	if (result == dfsn[now]) {
+		while (1) {
+			top = st.top();
+			st.pop();
+			finished[top] = 1;
+			sn[top] = SN;
+			if (top == now) break;
+		}
+		++SN;
+	}
+	return result;
+}
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int top, N, num, cur = 0, index = 0, current;
+	string now, next, target;
+	map<string, int>m;
+	queue<int>q;
+	cin >> N;
+	vector<vector<int>>scc;
+	FOR(i, N) {
+		cin >> now >> num;
+		if (m.find(now) == m.end()) m.insert(p(now, cur++));
+		while (num--) {
+			cin >> next;
+			if (m.find(next) == m.end()) m.insert(p(next, cur++));
+			g[m[next]].push_back(m[now]);
+		}
+	}
+	vector<ll>score(cur, 1 * 1LL);
+	cin >> target;
+	FOR(i, cur)
+		if (!dfsn[i])
+			dfs(i);
+	scc.resize(SN);
+	FOR(i, cur)
+		scc[sn[i]].push_back(i);
+	vector<int>scc_top[MAX];
+	FOR(i, cur)
+		for (int nxt : g[i])
+			if (sn[i] != sn[nxt]) {
+				++in[sn[nxt]];
+				scc_top[sn[i]].push_back(sn[nxt]);
+			}
+	vector<int>scc_order(SN);
+	FOR(i, SN)
+		if (!in[i])
+			q.push(i);
+	while (q.size()) {
+		current = q.front();
+		q.pop();
+		scc_order[index++] = current;
+		for (int nxt : scc_top[current]) {
+			--in[nxt];
+			if (!in[nxt]) q.push(nxt);
+		}
+	}
+	FOR(i, SN)
+		for (int curr : scc[scc_order[i]])
+			for (int check : g[curr])
+				if (sn[check] != sn[curr])
+					score[check] += score[curr];
+	cout << (m.find(target) == m.end() ? 1 : score[m[target]]) << '\n';
+	return 0;
+}
