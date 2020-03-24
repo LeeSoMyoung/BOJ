@@ -1,0 +1,45 @@
+
+// BOJ 1213 C++ 펠린드롬 만들기
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define REP(i,a,b) for(int i=a;i<b;++i)
+#define FOR(i,N) REP(i,0,N)
+#define ALPHABET 26
+using namespace std;
+typedef vector<int> vi;
+
+string rev(string& str) {
+	int len = str.size();
+	string ret = "";
+	for (int i = len - 1; i >= 0; --i) ret += str[i];
+	return ret;
+}
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	string str, ans="",tmp;
+	int len,cnt=0,odd=-1;
+	vi alphabet(ALPHABET, 0);
+	cin >> str;
+	len = str.size();
+	FOR(i, len)
+		++alphabet[str[i] - 'A'];
+	FOR(i, ALPHABET) 
+		if (alphabet[i] & 1) {
+			++cnt;
+			odd = i;
+			if (cnt >=2) break;
+		}
+	if (cnt >=2) {
+		cout << "I'm Sorry Hansoo" << '\n';
+		return 0;
+	}
+	FOR(i, ALPHABET)
+		FOR(j, alphabet[i] / 2)
+		ans += (i + 'A');
+	tmp=rev(ans);
+	if (odd != -1) ans += ('A' + odd);
+	cout << (ans+tmp)<< '\n';
+	return 0;
+}
