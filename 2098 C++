@@ -1,0 +1,31 @@
+
+// BOJ 2098 C++ 외판원 순회
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define rep(i,a,b) for(int i=a;i<b;++i)
+#define rep2(i,n) rep(i,0,n)
+#define MAX 16
+#define inf 1e9
+using namespace std;
+
+int g[MAX][MAX], cache[MAX][1<<MAX],n;
+int solve(int now,int begin,int flag) {
+	if (flag == (1 << n) - 1) return g[now][begin] ? g[now][begin] : inf;
+	int& ret = cache[now][flag];
+	if (ret) return ret;
+	ret = inf;
+	rep2(i, n) {
+		if (flag&(1 << i) || !g[now][i]) continue;
+		ret = min(ret, g[now][i] + solve(i, begin, flag + (1 << i)));
+	}
+	return ret;
+}
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	cin >> n;
+	rep2(i, n) rep2(j, n) cin >> g[i][j];
+	cout<<solve(0,0,1)<<'\n';
+	return 0;
+}
