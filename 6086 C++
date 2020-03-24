@@ -1,0 +1,61 @@
+
+// BOJ 6086 C++ 최대 유량
+
+#include <bits/stdc++.h>
+#define REP(i,a,b) for(int i=a;i<b;++i)
+#define FOR(i,N) REP(i,0,N)
+#define MAX 61
+using namespace std;
+
+int ans = 0;
+int c[MAX][MAX], f[MAX][MAX], dir[MAX];
+vector<int> v[MAX];
+int ctoi(const char x) {
+	if (x >= 'A'&&x <= 'Z') return x - 'A';
+	else return x - 'a' + 26;
+}
+void network_flow(const int start, const int end) {
+	int now, flow;
+	while (1) {
+		queue<int> q;
+		q.push(start);
+		fill(dir, dir + MAX, -1);
+		while (!q.empty()) {
+			now = q.front();
+			q.pop();
+			for (auto check : v[now])
+				if (c[now][check] - f[now][check] > 0 && dir[check] == -1) {
+					dir[check] = now;
+					q.push(check);
+					if (check == end) break;
+				}
+		}
+		if (dir[end] == -1) return;
+		flow = 1e9;
+		for (int i = end; i != start; i = dir[i])
+			flow = min(flow, c[dir[i]][i] - f[dir[i]][i]);
+		for (int i = end; i != start; i = dir[i]) {
+			f[dir[i]][i] += flow;
+			f[i][dir[i]] -= flow;
+		}
+		ans += flow;
+	}
+}
+
+int main(void) {
+    ios::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+	int N, fr, t, value;
+	char from, to;
+	cin>>N;
+	while(N--){
+		cin>>from>>to>>value;
+		fr = ctoi(from);
+		t = ctoi(to);
+		v[fr].push_back(t);
+		v[t].push_back(fr);
+		c[fr][t] = c[t][fr] += value;
+	}
+	network_flow(ctoi('A'), ctoi('Z'));
+	cout<<ans<<'\n';
+	return 0;
+}
