@@ -1,0 +1,32 @@
+
+// BOJ 3020 개똥벌레 C++
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define rep(i,a,b) for(int i=a;i<b;++i)
+#define rep2(i,N) rep(i,0,N)
+#define all(x) x.begin(),x.end()
+using namespace std;
+typedef vector<int> vi;
+
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int n, h,val,ans1=numeric_limits<int>::max(),ans2=0;
+	cin >> n >> h;
+	vi arr1(h, 0), arr2(h, 0);
+	rep2(i, n) {
+		cin >> val;
+		--val;
+		if (i & 1) ++arr2[val];
+		else ++arr1[val];
+	}
+	vi sum1(h, 0), sum2(h, 0);
+	sum1[h-1] = arr1[h-1]; sum2[0] = arr2[h-1];
+	for (int i = h - 2; i >= 0; --i) sum1[i] = sum1[i + 1] + arr1[i];
+	rep(i, 1, h) sum2[i] = sum2[i - 1] + arr2[h - i-1];
+	rep2(i,h) ans1 = min(ans1, sum1[i] + sum2[i]);
+	rep2(i,h) if (ans1 == sum1[i] + sum2[i]) ++ans2;
+	cout << ans1 << ' ' << ans2 << '\n';
+	return 0;
+}
