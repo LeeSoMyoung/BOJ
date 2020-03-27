@@ -1,0 +1,42 @@
+
+// BOJ C++ 정복자 14950
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define rep(i,a,b) for(int i=a;i<b;++i)
+#define rep2(i,N) rep(i,0,N)
+#define pb push_back
+using namespace std;
+typedef pair<int, int> pii;
+typedef vector<vector<pii>> vp;
+typedef vector<bool> vb;
+
+int main(void) {
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+	int n, m, t,u,v,cost,ans=0,now;
+	priority_queue<pii, vector<pii>, greater<pii>>pq;
+	cin >> n >> m >> t;
+	vp g;
+	g.resize(n + 1);
+	while (m--) {
+		cin >> u >> v >> cost;
+		g[u].pb(pii(cost, v));
+		g[v].pb(pii(cost, u));
+	}
+	vb visited(n + 1, false);
+	now = 1;
+	rep2(i, n - 1) {
+		visited[now] = true;
+		for (pii next : g[now]) pq.push(next);
+		while (visited[pq.top().second]) pq.pop();
+		ans += pq.top().first;
+		now = pq.top().second;
+		pq.pop();
+	}
+	ans += t * (n - 1)*(n - 2) / 2;
+	cout << ans << '\n';
+	return 0;
+}
