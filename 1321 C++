@@ -1,0 +1,64 @@
+
+// BOJ 1321 군인 C++
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define rep(i,a,b) for(int i=a;i<b;++i)
+#define rep2(i,N) rep(i,0,N)
+#define r(x,n) x.resize(n)
+using namespace std;
+typedef long long int ll;
+typedef vector<ll> vi;
+
+void update(int i, int h,ll val, vi& arr) {
+	i += h - 1;
+	arr[i] += val;
+	while (i > 1) {
+		i /= 2;
+		arr[i] = arr[i * 2 + 1] + arr[i * 2];
+	}
+	return;
+}
+ll query(int L, int R, int nodeNum, int nodeL, int nodeR, vi&arr) {
+	if (L <= nodeL && nodeR <= R) return arr[nodeNum];
+	else if (nodeR<L || nodeL>R) return 0;
+	int mid = (nodeL + nodeR) >> 1;
+	return query(L, R, nodeNum * 2, nodeL, mid, arr) + query(L, R, nodeNum * 2 + 1, mid + 1, nodeR, arr);
+}
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int n, m, cmd, a, b,h=1,print,start,rear,mid;
+	ll val,check;
+	cin >> n;
+	while (n > h) h <<= 1;
+	vi arr(2 * h,0);
+	rep(i, 1, n + 1) {
+		cin >> val;
+		update(i, h, val, arr);
+	}
+	cin >> m;
+	while (m--) {
+		cin >> cmd >> a;
+		if (cmd ==1) {
+			cin >> b;
+			update(a, h, b, arr);
+		}
+		else {
+			start = 1;
+			rear = n;
+			while (start <= rear) {
+				mid = (start + rear) >> 1;
+				print = query(1, mid, 1, 1, h, arr);
+				if (print > a) rear = mid - 1;
+				else if (print == a) {
+					start = mid;
+					break;
+				}
+				else start = mid + 1;
+			}
+			cout << start << '\n';
+		}
+	}
+	return 0;
+}
