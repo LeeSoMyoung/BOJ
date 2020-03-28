@@ -1,0 +1,37 @@
+
+// BOJ C++ 11812 K진 트리
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define REP(i,a,b) for(int i=a;i<b;++i)
+#define FOR(i,N) REP(i,0,N)
+using namespace std;
+typedef unsigned long long int ll;
+
+ll square(ll a, ll b) {
+	ll ret = 1LL;
+	while(b--) ret *= a;
+	return ret;
+}
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	ll N, u, v, K, Q, d1, d2, d3;
+	cin >> N >> K >> Q;
+	while (Q--) {
+		cin >> u >> v;
+		if (K == 1) {
+			cout << max(u,v)-min(u,v) << '\n';
+			continue;
+		}
+		for (d1 = 1LL; (((square(K, d1 - 1) - 1) / (K - 1)) >= u) || (((square(K, d1) - 1) / (K - 1)) < u); ++d1);
+		for (d2 = 1LL; (((square(K, d2 - 1) - 1) / (K - 1)) >= v )|| (((square(K, d2) - 1) / (K - 1)) < v); ++d2);
+		while (u != v) {
+			if (u < v) swap(u, v);
+			u = (u - 2) / K+1;
+		}
+		for (d3 = 1; (((square(K, d3 - 1) - 1) / (K - 1)) >= u) || (((square(K, d3) - 1) / (K - 1)) < u); ++d3);
+		cout << d1 + d2 - 2 * d3 << '\n';
+	}
+	return 0;
+}
