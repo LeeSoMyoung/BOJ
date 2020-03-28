@@ -1,0 +1,31 @@
+
+// BOJ Kotlin(JVM) 사칙연산
+
+import java.util.Scanner
+
+fun main(args:Array<String>){
+    val sc=Scanner(System.`in`)
+    var TC:Int=sc.nextInt()
+    var a:Long?
+    var b:Long?
+    var c:Long?
+    var x:String?
+    var y:String?
+    var ans:Long?
+    for(i in 0 until TC){
+        a=sc.nextLong()
+        x=sc.next()
+        b=sc.nextLong()
+        y=sc.next()
+        c=sc.nextLong()
+            when(x[0]){
+                '*'->ans=a*b
+                '-'->ans=a-b
+                '+'->ans=a+b
+                else->ans=a/b
+            }
+            if(ans==c) println("correct")
+            else println("wrong answer")
+        
+    }
+}
