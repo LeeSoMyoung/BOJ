@@ -1,0 +1,45 @@
+
+// BOJ 저항 Kotlin(JVM)
+
+import java.util.Scanner
+
+fun value(input:String):Int=when{
+    input=="black"->0
+    input=="brown"->1
+    input=="red"->2
+    input=="orange"->3
+    input=="yellow"->4
+    input=="green"->5
+    input=="blue"->6
+    input=="violet"->7
+    input=="grey"->8
+    else->9
+}
+fun multiply(input:String):Long=when{
+    input=="black"->1
+    input=="brown"->10
+    input=="red"->100
+    input=="orange"->1000
+    input=="yellow"->10000
+    input=="green"->100000
+    input=="blue"->1000000
+    input=="violet"->10000000
+    input=="grey"->100000000
+    else->1000000000
+}
+fun main(args:Array<String>){
+	val sc=Scanner(System.`in`)
+    var str=Array<String>(3){" "}
+    var ans:Long=0
+    for(i in 0 until 3){
+        str[i]=sc.next()
+        if(i==0){
+            ans=ans+value(str[i])*10
+        }
+        else if(i==1){
+            ans=ans+value(str[i])
+        }
+        else ans=ans*multiply(str[i])
+    }
+    println(ans)
+}
