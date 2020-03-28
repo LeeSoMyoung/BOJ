@@ -1,0 +1,24 @@
+
+// BOJ C++ 1181 단어정렬
+
+#include <bits/stdc++.h>
+#define REP(i,a,b) for(int i=a;i<b;++i)
+#define FOR(i,N) REP(i,0,N)
+#define all(x) x.begin(),x.end()
+using namespace std;
+typedef vector<string> vs;
+
+bool comp(string a, string b) {
+	if (a.size() == b.size()) return a < b;
+	return a.size() < b.size();
+}
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int N;
+	cin >> N; vs arr(N);
+	FOR(i, N) cin >> arr[i];
+	sort(all(arr), comp);
+	arr.erase(unique(all(arr)), arr.end());
+	for (string print : arr) cout << print << '\n';
+	return 0;
+}
