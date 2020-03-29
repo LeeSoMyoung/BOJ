@@ -1,0 +1,47 @@
+
+// BOJ 12764 싸지방에 간 준하 C++
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define REP(i,a,b) for(int i=a;i<b;++i)
+#define FOR(i,N) REP(i,0,N)
+#define mp make_pair
+using namespace std;
+typedef pair<int, int> pii;
+typedef vector<pii> v;
+typedef vector<int> vi;
+
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int N, size = 0, front; pii input, now;
+	priority_queue<pii, vector<pii>, greater<pii>>pq, pq2;
+	priority_queue<int, vector<int>, greater<int>>pq3;
+	cin >> N; vi cnt(N, 0);
+	FOR(i, N) {
+		cin >> input.first >> input.second;
+		pq.push(input);
+	}
+	FOR(i,N){
+		now = pq.top(); pq.pop();
+		if (!pq2.empty()) {
+			while (!pq2.empty() && (now.first > pq2.top().first)) {
+				pq3.push(pq2.top().second);
+				pq2.pop();
+			}
+		}
+		if (!pq3.empty()) {
+			front = pq3.top();
+			++cnt[front - 1];
+			pq2.push(mp(now.second, front));
+			pq3.pop();
+		}
+		else {
+			++cnt[size++];
+			pq2.push(mp(now.second, size));
+		}
+	}
+	cout << size << '\n';
+	FOR(i, size) cout << cnt[i] << ' ';
+	return 0;
+}
