@@ -1,0 +1,27 @@
+
+// BOJ 행복유치원 13164 C++
+
+#include <stdio.h>
+#include <algorithm>
+#include <stdlib.h>
+using namespace std;
+
+int main(void) {
+	int i, ans = 0;
+    int *kids;
+    int* difference;
+    int n,k;
+	scanf("%d %d", &n, &k);
+    kids=(int*)malloc(sizeof(int)*n);
+    difference=(int*)malloc(sizeof(int)*(n-1));
+	for (i = 0; i < n; ++i) {
+		scanf("%d", kids + i);
+		if (i>0) difference[i - 1] = kids[i] - kids[i - 1];
+	}
+	sort(difference, difference + n-1);
+	for (i = 0; i < n - k; ++i) ans += difference[i];
+	printf("%d\n", ans);
+    free(kids);
+    free(difference);
+	return 0;
+}
