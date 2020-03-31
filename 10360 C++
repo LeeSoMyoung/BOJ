@@ -1,0 +1,74 @@
+
+// BOJ 10360 The mountaion of Gold? C++
+
+#include <stdio.h>
+#include <queue>
+#include <vector>
+#include <utility>
+#define MAX 2010
+#define INF 1e9
+using namespace std;
+
+vector<pair<int,int>> v[MAX];
+vector<int> rev[MAX];
+queue<int> q;
+int dist[MAX];
+bool visited[MAX];;
+int n;
+bool cycle,back;
+void bellman_ford(const int start,const int end) {
+	size_t i, j;
+	fill(dist, dist + n + 1, INF);
+	dist[start] = 0;
+	cycle = 0;
+		for (i = start; i <=end; ++i)
+			for (j = start; j <=end; ++j)
+				for (auto check : v[j]) {
+					if (dist[j] != INF && dist[check.first] > dist[j] + check.second) {
+						if (i == end) cycle = 1;
+						dist[check.first] = dist[j] + check.second;
+					}
+				}
+	return;
+}
+
+int main(void) {
+	size_t i,j,tc;
+	int T;
+	int m, a, b, c,now;
+	scanf("%d", &T);
+	for (tc = 1; tc <= T; ++tc) {
+		scanf("%d %d", &n, &m);
+		back = 0;
+		for (i = 0; i <= n; ++i) {
+			v[i].clear();
+			rev[i].clear();
+		}
+		while (m--) {
+			scanf("%d %d %d", &a, &b, &c);
+			v[a].push_back(make_pair(b, c));
+			rev[b].push_back(a);
+		}
+		fill(visited, visited + n+1, false);
+		q.push(0);
+		while (!q.empty()) {
+			now = q.front();
+			q.pop();
+			for(auto next:rev[now])
+				if (!visited[next]) {
+					visited[next] = true;
+					q.push(next);
+				}
+		}
+		bellman_ford(0, n - 1);
+        if(cycle){
+		for(i=0;i<n;++i)
+			for(auto check:v[i])
+				if (dist[check.first] > dist[i] + check.second&&visited[check.first]) {
+					back = 1;
+					break;
+				}}
+		printf("Case #%d: %s\n", tc, back ? "possible" : "not possible");
+	}
+	return 0;
+}
