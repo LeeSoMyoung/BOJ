@@ -1,0 +1,30 @@
+
+// BOJ 12015 가장 긴 증가하는 부분 수열2 C++ 시간복잡도: O(NlogN)
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define rep(i,a,b) for(int i=a;i<b;++i)
+#define rep2(i,N) rep(i,0,N)
+#define all(x) x.begin(),x.end()
+#define ep emplace_back
+using namespace std;
+typedef vector<int> vi;
+
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int n,val,index;
+	vi arr;
+	cin >> n;
+	arr.ep(0);
+	rep2(i, n) {
+		cin >> val;
+		if (val > arr.back()) arr.ep(val);
+		else {
+			index = lower_bound(all(arr), val) - arr.begin();
+			arr[index] = val;
+		}
+	}
+	cout << (arr.size() - 1) << '\n';
+	return 0;
+}
