@@ -1,0 +1,24 @@
+
+// BOJ C++ 2798 블랙잭
+
+#include <bits/stdc++.h>
+#define rep(i,a,b) for(int i=a;i<b;++i)
+#define forn(i,N) rep(i,0,N)
+using namespace std;
+typedef vector<int> vi;
+
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int n, m, cnt = 0,ans=1e9;
+	cin >> n >> m;
+	vi arr(n);
+	forn(i, n) cin >> arr[i];
+	forn(i, n) forn(j, n) forn(k, n) {
+		if (i == j || j == k || k == i) continue;
+		int ret = m - arr[i] - arr[j] - arr[k];
+		if (ret>=0&& ret < ans)
+			ans = ret;
+	}
+	cout << m-ans << '\n';
+	return 0;
+}
