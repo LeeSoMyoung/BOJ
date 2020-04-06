@@ -1,0 +1,35 @@
+
+// BOJ 2798 블랙잭 Java
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.IOException;
+import java.lang.*;
+
+public class Main {
+	public static void main(String[] args) throws IOException {
+		BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(System.out));
+		String input[]=br.readLine().split(" ");
+		int N=Integer.parseInt(input[0]);
+		int M=Integer.parseInt(input[1]);
+		int arr[]=new int[N];
+		int ans=Integer.MAX_VALUE;
+		String input2[]=br.readLine().split(" ");
+		for(int i=0;i<N;++i)
+			arr[i]=Integer.parseInt(input2[i]);
+		for(int i=0;i<N;++i) for(int j=0;j<N;++j) for(int k=0;k<N;++k) {
+			if(i==j||j==k||k==i) continue;
+			int val=M-arr[i]-arr[j]-arr[k];
+			if(val>=0&&ans>val) ans=val;
+		}
+		ans=M-ans;
+		System.out.println(ans);
+		bw.close();
+		br.close();
+		return;
+	}
+
+}
