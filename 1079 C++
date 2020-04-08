@@ -1,0 +1,61 @@
+
+// BOJ 1079 마피아 C++
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define rep(i,a,b) for(int i=a;i<b;++i)
+#define forn(i,N) rep(i,0,N)
+#define MAX 20
+using namespace std;
+typedef vector<int> vi;
+typedef vector<bool> vb;
+
+int kill(vi& guilty, vb& visited,int n){
+	int Max = -1, index;
+	forn(i,n)
+		if (guilty[i] > Max && !visited[i]) {
+			Max = guilty[i];
+			index = i;
+		}
+	return index;
+}
+void mafia(vi& guilty, vb& visited, int n,int sur, int num, int day, int r[][MAX], int* ans) {
+	if (visited[num] || sur == 1) {
+		*ans = max(*ans, day);
+		return;
+	}
+	if (sur&1) {
+		int target = kill(guilty, visited, n);
+		if (target == num) {
+			*ans = max(day, *ans);
+			return;
+		}
+		visited[target] = true;
+		mafia(guilty, visited, n,sur-1, num, day, r, ans);
+		visited[target] = false;
+	}
+	else {
+		forn(i, n) {
+			if (i == num || visited[i]) continue;
+			visited[i] = true;
+			forn(j, n) if (!visited[j]) guilty[j] += r[i][j];
+			mafia(guilty, visited, n,sur - 1, num, day + 1, r, ans);
+			forn(j, n) if (!visited[j]) guilty[j] -= r[i][j];
+			visited[i] = false;
+		}
+	}
+}
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int n,r[MAX][MAX],num,ans=0;
+	cin >> n;
+	vi guilty(n);
+	vb visited(n, false);
+	forn(i, n) cin >> guilty[i];
+	forn(i, n) forn(j, n) cin >> r[i][j];
+	cin >> num;
+	mafia(guilty, visited, n,n,num, 0, r, &ans);
+	cout << ans << '\n';
+	return 0;
+}
