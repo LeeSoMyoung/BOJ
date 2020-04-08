@@ -1,0 +1,26 @@
+
+// BOJ 2338 긴자리 계산 Java
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.IOException;
+import java.math.BigInteger;
+
+public class Main {
+	public static void main(String[] args) throws IOException {
+		BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+		//BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(System.out));
+		BigInteger val1,val2;
+		val1=new BigInteger(br.readLine());
+		val2=new BigInteger(br.readLine());
+		System.out.println(val1.add(val2));
+		System.out.println(val1.subtract(val2));
+		System.out.println(val1.multiply(val2));
+		//bw.flush();
+		//bw.close();
+		br.close();
+		return;
+	}
+}
