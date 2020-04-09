@@ -1,0 +1,38 @@
+
+// BOJ C++ 9663 N-Queen
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define rep(i,a,b) for(int i=a;i<b;++i)
+#define forn(i,N) rep(i,0,N)
+#define MAX 20
+using namespace std;
+
+bool chk(int r, int c,int m[MAX]) {
+	rep(i, 1, r)
+		if (m[i] == c || max(m[i], c) - min(m[i], c) == r - i)
+			return false;
+	return true;
+}
+void dfs(int depth,int n, int m[MAX], int* ans) {
+	if (depth == n) {
+		++*ans;
+		return;
+	}
+	rep(i,1,n+1)
+		if (chk(depth + 1, i, m)) {
+			m[depth + 1] = i;
+			dfs(depth + 1, n, m, ans);
+		}
+}
+int main(void) {
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+	int n, ans = 0, m[MAX];
+	cin >> n;
+	dfs(0, n, m, &ans);
+	cout << ans << '\n';
+	return 0;
+}
