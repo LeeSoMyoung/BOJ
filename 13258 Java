@@ -1,0 +1,32 @@
+
+// BOJ 13258 Java 복권 + 은행
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.IOException;
+import java.util.*;
+
+public class Main {
+	public static void main(String[] args) throws IOException {
+		BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(System.out));
+		Double ans;
+		int n=Integer.parseInt(br.readLine()),sum=0;
+		int arr[]=new int[n];
+		StringTokenizer st=new StringTokenizer(br.readLine()," ");
+		 for(int i=0;i<n;++i) {
+			arr[i]=Integer.parseInt(st.nextToken());
+			sum+=arr[i];
+		}
+		int j=Integer.parseInt(br.readLine()), c=Integer.parseInt(br.readLine());
+		Double s=(double)j*(double)arr[0]/(double)sum;
+		ans=s*c+(double)arr[0];
+		bw.write(Double.toString(ans));
+		bw.flush();
+		bw.close();
+		br.close();
+		return;
+	}
+}
