@@ -1,0 +1,36 @@
+
+// BOJ 2467 C++ 용액
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <iostream>
+#include <vector>
+#define FOR(i,N) for(int i=0;i<N;++i)
+using namespace std;
+typedef pair<int, int> pii;
+
+int ab(int a) { return a > 0 ? a : -a; }
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int N, idx1 = 0, idx2, ans = numeric_limits<int>::max(), val1, val2;
+	pii answer;
+	cin >> N;
+	vector<int>arr(N);
+	idx2 = N - 1;
+	FOR(i, N) cin >> arr[i];
+	while (idx1 < idx2) {
+		val1 = arr[idx1];
+		val2 = arr[idx2];
+		if (ab(val1 + val2) < ans) {
+			ans = ab(val1 + val2);
+			answer.first = val1;
+			answer.second = val2;
+		}
+		if (val1 + val2 < 0) 
+			++idx1;
+		else
+			--idx2;
+	}
+	cout << answer.first << ' ' << answer.second << '\n';
+	return 0;
+}
