@@ -1,0 +1,35 @@
+
+// BOJ 2470 두 용액 C++
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define rep(i,a,b) for(int i=a;i<b;++i)
+#define forn(i,N) rep(i,0,N)
+#define all(x) x.begin(),x.end()
+using namespace std;
+typedef vector<int> vi;
+typedef pair<int, int> pii;
+
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int n, diff = numeric_limits<int>::max(),start=0,rear;
+	pii ans;
+	cin >> n;
+	vi arr(n);
+	forn(i, n) cin >> arr[i];
+	sort(all(arr));
+	rear = n - 1;
+	while (start < rear) {
+		int tmp = arr[start] + arr[rear];
+		if (abs(tmp) < diff) {
+			diff = abs(tmp);
+			ans.first = arr[start];
+			ans.second = arr[rear];
+		}
+		if (tmp < 0) ++start;
+		else --rear;
+	}
+	cout << ans.first << ' ' << ans.second;
+	return 0;
+}
