@@ -1,0 +1,60 @@
+
+// BOJ 5573 산책 Java
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.IOException;
+import java.util.*;
+
+public class Main {
+	static int dp[][];
+	static int g[][];
+	public static void dfs(int y,int x,int h,int w,int n) throws IOException{
+		if(y>=h||x>=w) {
+			BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(System.out));
+			bw.write(Integer.toString(y+1)+' '+Integer.toString(x+1));
+			bw.flush(); bw.close();
+			return;
+		}
+		if(g[y][x]==0) dfs(y+1,x,h,w,n);
+		else dfs(y,x+1,h,w,n);
+		return;
+	}
+	public static void main(String[] args) throws IOException {
+		BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st=new StringTokenizer(br.readLine()," ");
+		int h=Integer.parseInt(st.nextToken()), w=Integer.parseInt(st.nextToken()),n=Integer.parseInt(st.nextToken()),val;
+		g=new int[h][w];
+		dp=new int[h+1][w+1];
+		for(int i=0;i<h;++i) {
+			st=new StringTokenizer(br.readLine()," ");
+			for(int j=0;j<w;++j)
+				g[i][j]=Integer.parseInt(st.nextToken());
+		}
+		dp[0][0]=n-1;
+		for(int i=0;i<h;++i)
+			for(int j=0;j<w;++j) {
+				val=dp[i][j];
+				if(g[i][j]==1) {
+					dp[i][j+1]+=val/2;
+					if(val%2==1) ++dp[i][j+1];
+					dp[i+1][j]+=val/2;
+					continue;
+				}
+				dp[i][j+1]+=val/2;
+				dp[i+1][j]+=val/2;
+				if(val%2==1) ++dp[i+1][j];
+			}
+		for(int i=0;i<h;++i)
+			for(int j=0;j<w;++j)
+				if(dp[i][j]%2==1) {
+					++g[i][j];
+					g[i][j]%=2;
+				}
+		dfs(0,0,h,w,n);
+		br.close();
+		return;
+	}
+}
