@@ -1,0 +1,42 @@
+
+// BOJ 2170 선 긋기 C++
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define rep(i,a,b) for(int i=a;i<b;++i)
+#define forn(i,N) rep(i,0,N)
+#define all(x) x.begin(),x.end()
+using namespace std;
+typedef long long int ll;
+typedef struct{
+	int start, end;
+}dot;
+
+bool comp(dot a, dot b) {
+	if (a.start == b.start)
+		return a.end < b.end;
+	return a.start < b.start;
+}
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int n,start,end;
+	ll ans = 0LL;
+	cin >> n;
+	vector<dot>arr(n);
+	forn(i, n) cin >> arr[i].start >> arr[i].end;
+	sort(all(arr),comp);
+	start = arr[0].start, end = arr[0].end;
+	rep(i, 1, n) {
+		if (arr[i].start <= end)
+			end = max(arr[i].end,end);
+		else {
+			ans += 1LL * (end - start);
+			start = arr[i].start;
+			end = arr[i].end;
+		}
+	}
+	ans += 1LL * (end - start);
+	cout << ans << '\n';
+	return 0;
+}
