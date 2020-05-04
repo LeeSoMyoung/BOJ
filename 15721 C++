@@ -1,0 +1,37 @@
+
+// BOJ 15721 번데기 C++
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define rep(i,a,b) for(int i=a;i<b;++i)
+#define forn(i,N) rep(i,0,N)
+using namespace std;
+
+int solve(int a, int t, int input) {
+	int cnt1 = 0, cnt2 = 0, cycle = 2;
+	while (1) {
+		forn(i, 4) {
+			if (i & 1) ++cnt2;
+			else ++cnt1;
+			if (cnt1 == t && !input) return (cnt1 + cnt2 - 1) % a;
+			if (cnt2 == t && input) return (cnt1 + cnt2 - 1) % a;
+		}
+		forn(i, cycle) {
+			++cnt1;
+			if (cnt1 == t && !input) return (cnt1 + cnt2 - 1) % a;
+		}
+		forn(i, cycle) {
+			++cnt2;
+			if (cnt2 == t && input) return (cnt1 + cnt2 - 1) % a;
+		}
+		++cycle;
+	}
+}
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int a, t, input;
+	cin >> a >> t >> input;
+	cout << solve(a, t, input) << '\n';
+	return 0;
+}
