@@ -1,0 +1,36 @@
+
+// BOJ 2865 나는 위대한 슈퍼스타 K Java
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+import java.text.DecimalFormat;
+
+public class Main {
+	private static double max(double a,double b) {return a>b?a:b;}
+	public static void main(String[] args) throws IOException {
+		BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(System.out));
+		StringTokenizer st=new StringTokenizer(br.readLine()," ");
+		int n=Integer.parseInt(st.nextToken()),m=Integer.parseInt(st.nextToken()),k=Integer.parseInt(st.nextToken()),index;
+		double score[]=new double[n];
+		double ans=0.0;
+		DecimalFormat form=new DecimalFormat("#.0");
+		while(m-->0) {
+			st=new StringTokenizer(br.readLine()," ");
+			for(int i=0;i<n;++i) {
+				index=Integer.parseInt(st.nextToken())-1;
+				score[index]=max(score[index],Double.parseDouble(st.nextToken()));
+			}
+		}
+		Arrays.sort(score);
+		for(int i=n-1;i>=n-k;--i) ans+=score[i];
+		bw.write(form.format(ans));
+		bw.flush(); bw.close(); br.close();
+		return;
+	}
+}
