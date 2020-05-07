@@ -1,0 +1,31 @@
+
+// BOJ 14646 욱제는 결정장애야!! Java
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.IOException;
+import java.util.StringTokenizer;
+
+public class Main {
+	private static int max(int a,int b) {return a>b?a:b;}
+	public static void main(String[] args) throws IOException {
+		BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(System.out));
+		int n=Integer.parseInt(br.readLine()),input,ans=0,cnt=0;
+		StringTokenizer st=new StringTokenizer(br.readLine()," ");
+		n*=2;
+		int arr[]=new int[100010];
+		for(int i=0;i<n;++i) {
+			input=Integer.parseInt(st.nextToken());
+			if(arr[input]==0) ++cnt;
+			else if(arr[input]==1) --cnt;
+			++arr[input];
+			ans=max(ans,cnt);
+		}
+		bw.write(Integer.toString(ans)+'\n');
+		bw.flush(); bw.close(); br.close();
+		return;
+		}
+}
