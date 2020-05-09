@@ -1,0 +1,56 @@
+
+// BOJ 3186 소변기 Java
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.StringTokenizer;
+import java.util.Vector;
+
+public class Main {
+	public static void main(String[] args) throws IOException {
+		BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(System.out));
+		StringTokenizer st=new StringTokenizer(br.readLine()," ");
+		int k=Integer.parseInt(st.nextToken()),l=Integer.parseInt(st.nextToken()),n=Integer.parseInt(st.nextToken()),size;
+		String str=br.readLine();
+		Vector<Integer> ans=new Vector<Integer>();
+		boolean flag=false,now=false;
+		int time=0,cnt=0;
+		for(int cur=0;cur<n;++cur) {
+			if(str.charAt(cur)=='1') {
+				++time;
+				if(time>=k) now=true;
+				cnt=0;
+			}
+			else {
+				if(now) {
+					++cnt;
+					if(cnt>=l) {
+						ans.add(cur+1);
+						flag=true;
+						now=false;
+						cnt=0;
+					}
+				}
+				time=0;
+			}
+		}
+		if(now) {
+			ans.add(l+n-cnt);
+			flag=true;
+		}
+		if(!flag) bw.write("NIKAD"+'\n');
+		else {
+		Collections.sort(ans);
+		size=ans.size();
+		for(int i=0;i<size;++i)
+			bw.write(Integer.toString(ans.get(i))+'\n');
+		}
+		bw.flush(); bw.close(); br.close();
+		return;
+		}
+}
