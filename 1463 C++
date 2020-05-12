@@ -1,0 +1,26 @@
+
+// BOJ 1463 C++ 1로 만들기
+
+#include <iostream>
+#include <vector>
+#define MAX 1000010
+using namespace std;
+
+int min(const int x,const int y){
+    return x>y?y:x;
+}
+int main(void){
+    ios::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+    int X;
+    size_t i;
+    cin>>X;
+    vector<int>dp(X+1);
+    dp[0]=dp[1]=0;
+    for(i=2;i<=X;++i){
+        dp[i]=dp[i-1]+1;
+        if(!(i%2)) dp[i]=min(dp[i],dp[i/2]+1);
+        if(!(i%3)) dp[i]=min(dp[i],dp[i/3]+1);
+    }
+    cout<<dp[X]<<'\n';
+    return 0;
+}
