@@ -1,0 +1,23 @@
+
+// BOJ 11048 이동하기 C++
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <iostream>
+#define MAX 1010
+#define REP(i,a,b) for(int i=a;i<b;++i)
+using namespace std;
+
+int arr[MAX][MAX], dp[MAX][MAX];
+int max(int a, int b) { return a > b ? a : b; }
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int N, M;
+	cin >> N >> M;
+	REP(i, 1, N + 1) REP(j, 1, M + 1) cin >> arr[i][j];
+	REP(i, 1, N + 1)
+		REP(j, 1, M + 1)
+		dp[i][j] = arr[i][j]+max(dp[i-1][j],max(dp[i-1][j-1],dp[i][j-1]));
+	cout << dp[N][M] << '\n';
+	return 0;
+}
