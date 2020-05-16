@@ -1,0 +1,24 @@
+
+// BOJ 15483 최소 편집 C++
+
+#include <bits/stdc++.h>
+#define rep(i,a,b) for(int i=a;i<b;++i)
+#define forn(i,N) rep(i,0,N)
+using namespace std;
+typedef vector<int> vi;
+typedef vector<vi> vvi;
+
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	string str1, str2;
+	int len1, len2;
+	cin >> str1 >> str2;
+	len1 = str1.size(), len2 = str2.size();
+	vvi dp(len1+1, vi(len2+1, 0));
+	rep(i, 1, len1 + 1) dp[i][0] = i;
+	rep(i, 1, len2 + 1) dp[0][i] = i;
+	rep(i,1, len1+1) rep(j,1, len2+1)
+		dp[i][j]=str1[i-1]==str2[j-1]? dp[i][j]=dp[i-1][j-1]:min(dp[i-1][j-1],min(dp[i][j-1],dp[i-1][j]))+1;
+	cout << dp[len1][len2] << '\n';
+	return 0;
+}
