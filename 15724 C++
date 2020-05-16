@@ -1,0 +1,34 @@
+
+// BOJ 15724 주지수 C++
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define rep(i,a,b) for(int i=a;i<b;++i)
+#define forn(i,N) rep(i,0,N)
+using namespace std;
+typedef long long int ll;
+typedef vector<ll> vl;
+typedef vector<vl> vvl;
+
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int n, m, k,x1,y1,x2,y2;
+	ll val,ans;
+	cin >> n >> m;
+	vvl dp(n, vl(m));
+	forn(i, n) forn(j, m) {
+		cin >> val;
+		if (!i) dp[i][j] = val;
+		else dp[i][j] = dp[i-1][j] + val;
+	}
+	cin >> k;
+	while (k--) {
+		ans = 0LL;
+		cin >> y1 >> x1 >> y2 >> x2;
+		rep(x, x1 - 1, x2)
+			ans += y1>1?(dp[y2 - 1][x]-dp[y1-2][x]):dp[y2-1][x];
+		cout << ans << '\n';
+	}
+	return 0;
+}
