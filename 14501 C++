@@ -1,0 +1,27 @@
+
+// BOJ 14501 퇴사 C++
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define rep(i,a,b) for(int i=a;i<b;++i)
+#define forn(i,N) rep(i,0,N)
+using namespace std;
+typedef pair<int, int> pii;
+typedef vector<pii> vpii;
+typedef vector<int> vi;
+
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int n;
+	cin >> n;
+	vpii arr(n); vi dp(n+1,0);
+	forn(i, n) cin >> arr[i].first >> arr[i].second;
+	for (int i = n - 1; i >=0; --i) {
+		if (!dp[i]) dp[i] = dp[i + 1];
+		if (i + arr[i].first > n) continue;
+		dp[i] = max(dp[i + arr[i].first] + arr[i].second, dp[i]);
+	}
+	cout << dp[0] << '\n';
+	return 0;
+}
