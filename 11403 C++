@@ -1,0 +1,25 @@
+
+// BOJ 11403 경로 찾기 C++
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define rep(i,a,b) for(int i=a;i<b;++i)
+#define forn(i,N) rep(i,0,N)
+#define MAX 110
+using namespace std;
+
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int arr[MAX][MAX], n;
+	cin >> n;
+	forn(i, n) forn(j, n) cin >> arr[i][j];
+	forn(k, n) forn(i, n) forn(j, n)
+		if (!arr[i][j]&&arr[i][k]&&arr[k][j])
+			arr[i][j] = 1;
+	forn(i, n) {
+		forn(j, n) cout << arr[i][j] << ' ';
+		cout << '\n';
+	}
+	return 0;
+}
