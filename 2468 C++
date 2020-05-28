@@ -1,0 +1,52 @@
+
+// BOJ 2468 안전 영역 C++
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define rep(i,a,b) for(int i=a;i<b;++i)
+#define forn(i,N) rep(i,0,N)
+#define eb emplace_back
+#define MAX 110
+using namespace std;
+typedef pair<int, int> pii;
+
+bool visited[MAX][MAX];
+int g[MAX][MAX], dx[4] = { 0,0,1,-1 }, dy[4] = { 1,-1,0,0 };
+void bfs(int n, int y,int x,int depth) {
+	queue<pii> q;
+	q.push(pii(y, x));
+	visited[y][x] = true;
+	while (!q.empty()) {
+		int nowy = q.front().first, nowx = q.front().second;
+		q.pop();
+		forn(dir, 4) {
+			int yy = nowy + dy[dir], xx = nowx + dx[dir];
+			if (yy < 0 || xx < 0 || yy >= n || xx >= n || visited[yy][xx] || g[yy][xx] <= depth) continue;
+			visited[yy][xx] = true;
+			q.push(pii(yy, xx));
+		}
+	}
+	return;
+}
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int n,ans=0,maxx=-1,cnt;
+	cin >> n;
+	forn(i, n) forn(j, n) {
+		cin >> g[i][j];
+		maxx = max(g[i][j], maxx);
+	}
+	forn(depth, maxx) {
+		memset(visited, false, sizeof(visited));
+		cnt = 0;
+		forn(i,n) forn(j,n)
+			if (!visited[i][j] && (g[i][j] > depth)) {
+				++cnt;
+				bfs(n, i,j,depth);
+			}
+		ans = max(ans, cnt);
+	}
+	cout << ans << '\n';
+	return 0;
+}
