@@ -1,0 +1,47 @@
+
+// BOJ 7569 토마토 C++
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define rep(i,a,b) for(int i=a;i<b;++i)
+#define forn(i,N) rep(i,0,N)
+#define MAX 110
+using namespace std;
+typedef pair<int, int> pii;
+typedef pair<int,pii> p;
+
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int m, n, k,ans=0,cnt=0,count=0,one=0,g[MAX][MAX][MAX],BFS[MAX][MAX][MAX],maxx=-1;
+	int dz[6] = { 1,-1,0,0,0,0 }, dx[6] = { 0,0,0,0,1,-1 }, dy[6] = { 0,0,1,-1,0,0 };
+	cin >> m >> n >> k;
+	queue<p>q;
+	forn(height, k) forn(i, n) forn(j, m) {
+		cin >> g[height][i][j];
+		if (g[height][i][j] == -1) ++cnt;
+		else if (g[height][i][j]) {
+			q.push(p(height, pii(i, j)));
+			BFS[height][i][j] = 1;
+		}
+	}
+	if (one + cnt == n * m*k)
+		return cout << (q.size() ? 0 : -1) << '\n',0;
+	while (!q.empty()) {
+		int z = q.front().first, y = q.front().second.first, x = q.front().second.second;
+		q.pop();
+		maxx = max(maxx, BFS[z][y][x]);
+		forn(i, 6) {
+			int zz = z + dz[i], yy = y + dy[i], xx = x + dx[i];
+			if (zz < 0 || yy < 0 || xx < 0 || zz >= k || yy >= n || xx >= m || g[zz][yy][xx]) continue;
+			g[zz][yy][xx] = 1;
+			BFS[zz][yy][xx] = BFS[z][y][x] + 1;
+			q.push(p(zz, pii(yy, xx)));
+		}
+	}
+	forn(height, k) forn(i, n) forn(j, m)
+		if (!g[height][i][j])
+			return cout << -1, 0;
+	cout << maxx - 1 << '\n';
+	return 0;
+}
