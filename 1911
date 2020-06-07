@@ -1,0 +1,47 @@
+
+// BOJ 1911 흙길 보수하기 C++
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define rep(i,a,b) for(int i=a;i<b;++i)
+#define forn(i,N) rep(i,0,N)
+using namespace std;
+class P {
+public:
+	int start, end;
+	P(){}
+	P(int start, int end) {
+		this->start = start;
+		this->end = end;
+	}
+	bool operator< (const P& cmp) const{
+		if (start == cmp.start)
+			return end > cmp.end;
+		return start > cmp.start;
+	}
+};
+
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int n, l,ans=0,start,end;
+	cin >> n >> l;
+	priority_queue<P>pq;
+	while (n--) {
+		cin >> start >> end;
+		pq.push(P(start,end));
+	}
+	start = 0;
+	while (!pq.empty()) {
+		P top = pq.top(); 
+		pq.pop();
+		start = max(start, top.start);
+		if (start >= top.end) continue;
+		start = max(start, top.start);
+		int length = (top.end - start - 1) / l + 1;
+		ans += length;
+		start += l * length;
+	}
+	cout << ans << '\n';
+	return 0;
+}
