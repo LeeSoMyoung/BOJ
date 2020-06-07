@@ -1,0 +1,48 @@
+
+// BOJ 2457 공주님의 정원 C++
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define rep(i,a,b) for(int i=a;i<b;++i)
+#define forn(i,N) rep(i,0,N)
+#define all(x) x.begin(),x.end()
+#define f first
+#define s second
+using namespace std;
+typedef pair<int, int> pii;
+typedef vector<pii> vpii;
+
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int ans = 0, n, start_month, start_day, end_month, end_day, time = 301, index;
+	cin >> n;
+	vpii arr(n);
+	forn(i, n) {
+		cin >> start_month >> start_day >> end_month >> end_day;
+		arr[i] = pii(start_month * 100 + start_day, end_month * 100 + end_day);
+	}
+	sort(all(arr));
+	index = 0;
+	while (arr[index].second < 301) {
+		++index;
+	}
+	if (arr[index].first > 301) return cout << 0, 0;
+	index -= 1;
+	while (time <= 1130) {
+		int update = 0;
+		++index;
+		rep(i, index, n) {
+			if (arr[i].f > time) break;
+			else if (arr[i].s > update) {
+				update = arr[i].s;
+				index = i;
+			}
+		}
+		if (!update) return cout << 0, 0;
+		time = update;
+		++ans;
+	}
+	cout << ans << '\n';
+	return 0;
+}
