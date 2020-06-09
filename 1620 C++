@@ -1,0 +1,30 @@
+
+// BOJ 1620 나는야 포켓몬 마스터 이다솜 C++
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define rep(i,a,b) for(int i=a;i<b;++i)
+#define forn(i,N) rep(i,0,N)
+using namespace std;
+
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	map<string, int> x;
+	map<int, string>y;
+	int n, m,tmp;
+	string name;
+	cin >> n >> m;
+	forn(i, n) {
+		cin >> name;
+		x.insert({ name,i + 1 });
+		y.insert({ i + 1,name });
+	}
+	while (m--) {
+		cin >> name;
+		tmp = atoi(name.c_str());
+		if (tmp) cout << y[tmp] << '\n';
+		else cout << x[name] << '\n';
+	}
+	return 0;
+}
