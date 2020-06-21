@@ -1,0 +1,73 @@
+
+// BOJ 4196 도미노 C++
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define rep(i,a,b) for(int i=a;i<b;++i)
+#define forn(i,N) rep(i,0,N)
+#define MAX 100100
+#define all(x) x.begin(),x.end()
+#define eb emplace_back
+using namespace std;
+typedef vector<int> vi;
+typedef vector<vi> vvi;
+
+bool visited[MAX];
+stack<int> st;
+int cnt, SN,dfsn[MAX],sn[MAX],in[MAX];
+vvi g;
+int dfs(int now) {
+	int result, top;
+	st.push(now);
+	dfsn[now] = ++cnt;
+	result = dfsn[now];
+	for (int next : g[now]) {
+		if (!dfsn[next]) result = min(result, dfs(next));
+		else if (!visited[next]) result = min(result, dfsn[next]);
+	}
+	if (result == dfsn[now]) {
+		while (1) {
+			top = st.top(); st.pop();
+			visited[top] = true;
+			sn[top] = SN;
+			if (top == now) break;
+		}
+		++SN;
+	}
+	return result;
+}
+void init(void) {
+	while (st.size()) st.pop();
+	fill(visited, visited + MAX, false);
+	fill(dfsn, dfsn + MAX, 0);
+	fill(in, in + MAX, 0);
+	fill(sn, sn + MAX, 0);
+	forn(i, g.size())
+		g[i].clear();
+	SN = cnt = 0;
+	return;
+}
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int tc, n, m, x, y,ans;
+	cin >> tc;
+	while (tc--) {
+		init();
+		cin >> n >> m;
+		ans = 0;
+		g.resize(n + 1);
+		while (m--) {
+			cin >> x >> y;
+			g[x].eb(y);
+		}
+		rep(i, 1, n + 1) if (!dfsn[i]) dfs(i);
+		rep(i, 1, n + 1)
+			for (int next : g[i])
+				if (sn[i] != sn[next]) ++in[sn[next]];
+		forn(i, SN)
+			if (!in[i]) ++ans;
+		cout << ans << '\n';
+	}
+	return 0;
+}
