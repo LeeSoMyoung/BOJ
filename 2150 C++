@@ -1,0 +1,71 @@
+
+// BOJ 2150 Strongly Connected Component C++
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define rep(i,a,b) for(int i=a;i<b;++i)
+#define forn(i,N) rep(i,0,N)
+#define MAX 100100
+#define all(x) x.begin(),x.end()
+#define eb emplace_back
+using namespace std;
+typedef vector<int> vi;
+typedef vector<vi> vvi;
+
+bool visited[MAX];
+vvi adj, rev;
+stack<int> st;
+void dfs(int now) {
+	for(int next:adj[now])
+		if (!visited[next]) {
+			visited[next] = true;
+			dfs(next);
+		}
+	st.push(now);
+	return;
+}
+void dfs2(int now,vi& scc) {
+	scc.eb(now);
+	for(int next:rev[now])
+		if (!visited[next]) {
+			visited[next] = true;
+			dfs2(next, scc);
+		}
+	return;
+}
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int v, e, a, b, top;
+	cin >> v >> e;
+	vvi scc;
+	adj.resize(v + 1);
+	rev.resize(v + 1);
+	while (e--) {
+		cin >> a >> b;
+		adj[a].eb(b);
+		rev[b].eb(a);
+	}
+	rep(i, 1, v) if (!visited[i]) {
+		visited[i] = true;
+		dfs(i);
+	}
+	fill(visited, visited + MAX, false);
+	while (st.size()) {
+		top = st.top(); st.pop();
+		if (visited[top]) continue;
+		vi SCC;
+		visited[top] = true;
+		dfs2(top, SCC);
+		sort(all(SCC));
+		scc.eb(SCC);
+	}
+	cout << scc.size() << '\n';
+	sort(all(scc));
+	for (vi print : scc) {
+		for (int out : print)
+			cout << out << ' ';
+		cout << -1 << '\n';
+	}
+	return 0;
+}
