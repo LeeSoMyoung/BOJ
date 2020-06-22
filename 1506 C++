@@ -1,0 +1,66 @@
+
+// BOJ 1506 경찰서 C++
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define rep(i,a,b) for(int i=a;i<b;++i)
+#define forn(i,N) rep(i,0,N)
+#define MAX 110
+#define all(x) x.begin(),x.end()
+#define eb emplace_back
+using namespace std;
+typedef vector<int> vi;
+typedef vector<vi> vvi;
+
+vvi adj, scc;
+stack<int> st;
+bool visited[MAX];
+int dfsn[MAX], sn[MAX], SN = 0, cnt = 0;
+int dfs(int now,vvi&scc) {
+	int top, result;
+	st.push(now);
+	dfsn[now] = ++cnt;
+	result = dfsn[now];
+	for (int next : adj[now]) {
+		if (!dfsn[next]) result = min(dfs(next,scc), result);
+		else if (!visited[next]) result = min(dfsn[next], result);
+	}
+	if (result == dfsn[now]) {
+		vi Scc;
+		while (1) {
+			top = st.top(); st.pop();
+			visited[top] = true;
+			sn[top] = SN;
+			Scc.eb(top);
+			if (top == now) break;
+		}
+		sort(all(Scc));
+		scc.eb(Scc);
+		++SN;
+	}
+	return result;
+}
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int n,ans=0;
+	char input;
+	vvi scc;
+	cin >> n;
+	vi cost(n);
+	adj.resize(n);
+	forn(i, n) cin >> cost[i];
+	forn(i, n) forn(j, n) {
+		cin >> input;
+		if (input - '0') adj[i].eb(j);
+	}
+	forn(i, n) if (!dfsn[i]) dfs(i,scc);
+	for (vi now : scc) {
+		int minn = (int)1e9;
+		for (int next : now)
+			minn = min(cost[next], minn);
+		ans += minn;
+	}
+	cout << ans << '\n';
+	return 0;
+}
