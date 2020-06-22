@@ -1,0 +1,56 @@
+
+// BOJ 15783 세진 바이러스 C++
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define rep(i,a,b) for(int i=a;i<b;++i)
+#define forn(i,N) rep(i,0,N)
+#define MAX 100100
+#define all(x) x.begin(),x.end()
+#define eb emplace_back
+using namespace std;
+typedef vector<int> vi;
+typedef vector<vi> vvi;
+
+vvi adj, scc;
+stack<int> st;
+bool visited[MAX];
+int dfsn[MAX], sn[MAX], SN = 0, cnt = 0;
+int dfs(int now) {
+	int top, result;
+	st.push(now);
+	dfsn[now] = ++cnt;
+	result = dfsn[now];
+	for (int next : adj[now]) {
+		if (!dfsn[next]) result = min(dfs(next), result);
+		else if (!visited[next]) result = min(dfsn[next], result);
+	}
+	if (result == dfsn[now]) {
+		while (1) {
+			top = st.top(); st.pop();
+			visited[top] = true;
+			sn[top] = SN;
+			if (top == now) break;
+		}
+		++SN;
+	}
+	return result;
+}
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int n, m, a, b, ans = 0;
+	cin >> n >> m;
+	adj.resize(n);
+	while (m--) {
+		cin >> a >> b;
+		adj[a].eb(b);
+	}
+	forn(i, n) if (!dfsn[i]) dfs(i);
+	vi in(SN, 0);
+	forn(i, n) for (int next : adj[i])
+		if (sn[i] != sn[next]) ++in[sn[next]];
+	forn(i, SN) if (!in[i]) ++ans;
+	cout << ans << '\n';
+	return 0;
+}
