@@ -1,0 +1,51 @@
+
+// BOJ 2589 보물섬 C++17
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define rep(i,a,b) for(int i=a;i<b;++i)
+#define forn(i,N) rep(i,0,N)
+#define MAX 55
+using namespace std;
+typedef pair<int, int> pii;
+
+char g[MAX][MAX];
+bool visited[MAX][MAX];
+int ans = -1, dx[4] = { 0,0,1,-1 }, dy[4] = {1,-1,0,0};
+void bfs(int Y, int X,int n,int m) {
+	visited[Y][X] = true;
+	queue<pii> q;
+	q.push(pii(Y, X));
+	int y, x, yy, xx,cnt=0,size;
+	while (!q.empty()) {
+		size = q.size();
+		ans = max(ans, cnt);
+		while (size--) {
+			y = q.front().first; x = q.front().second;
+			q.pop();
+			forn(i, 4) {
+				yy = y + dy[i];
+				xx = x + dx[i];
+				if (yy < 0 || xx < 0 || yy >= n || xx >= m || visited[yy][xx] || g[yy][xx] == 'W') continue;
+				q.push(pii(yy, xx));
+				visited[yy][xx] = true;
+			}
+		}
+		++cnt;
+	}
+	return;
+}
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int n, m;
+	cin >> n >> m;
+	forn(i, n) forn(j, m) cin >> g[i][j];
+	forn(i,n) forn(j,m)
+		if (g[i][j] == 'L') {
+			memset(visited, false, sizeof(visited));
+			bfs(i, j, n, m);
+		}
+	cout << ans << '\n';
+ 	return 0;
+}
