@@ -1,0 +1,74 @@
+
+// BOJ 1991 C++ 17 트리 순회
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define rep(i,a,b) for(int i=a;i<b;++i)
+#define forn(i,N) rep(i,0,N)
+using namespace std;
+typedef struct node {
+	char val;
+	struct node *left, *right;
+}node;
+node *newNode(char val) {
+	node *New = (node*)malloc(sizeof(node));
+	New->val = val;
+	New->left = NULL;
+	New->right = NULL;
+	return New;
+}
+node *search(node *now, char val) {
+	if (now) {
+		if (now->val == val) return now;
+		else {
+			node *tmp = search(now->left, val);
+			if (tmp) return tmp;
+			return search(now->right, val);
+		}
+	}
+	return NULL;
+}
+void insert(node *now, char a, char b, char c) {
+	now->val = a;
+	if (b != '.') now->left = newNode(b);
+	if (c != '.') now->right = newNode(c);
+	return;
+}
+void pre(node *now) {
+	if (now) cout << now->val;
+	if (now->left) pre(now->left);
+	if (now->right) pre(now->right);
+	return;
+}
+void in(node *now) {
+	if (now->left) in(now->left);
+	cout << now->val;
+	if (now->right) in(now->right);
+	return;
+}
+void post(node *now) {
+	if (now->left) post(now->left);
+	if (now->right) post(now->right);
+	cout << now->val;
+	return;
+}
+
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int n;
+	char a, b, c;
+	node *root = newNode(NULL);
+	node *tmp;
+	cin >> n;
+	while (n--) {
+		cin >> a >> b >> c;
+		getchar();
+		tmp = search(root, a);
+		insert((tmp ? tmp:root), a, b, c);
+	}
+	pre(root); cout << '\n';
+	in(root); cout << '\n';
+	post(root); cout << '\n';
+	return 0;
+}
