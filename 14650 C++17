@@ -1,0 +1,25 @@
+
+// BOJ 14650 C++17 걷다보니 신천역 삼
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define rep(i,a,b) for(int i=a;i<b;++i)
+#define forn(i,N) rep(i,0,N)
+using namespace std;
+typedef long long int ll;
+
+ll go(ll now, int cnt, int depth) {
+	if (!cnt) return go(1, 1, depth) + go(1, 1, depth);
+	else if (cnt < depth)
+		return go(now * 10, cnt + 1, depth) + go(now * 10 + 1, cnt + 1, depth) + go(now * 10 + 2, cnt + 1, depth);
+	else if (cnt == depth)
+		return now % 3 ? 0 : 1;
+}
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int n;
+	cin >> n;
+	cout << go(0LL, 0, n) << '\n';
+	return 0;
+}
