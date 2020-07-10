@@ -1,0 +1,64 @@
+
+// BOJ 5639 C++17 이진 검색 트리
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <bits/stdc++.h>
+#define rep(i,a,b) for(int i=a;i<b;++i)
+#define forn(i,N) rep(i,0,N)
+#define all(x) x.begin(),x.end()
+#define newNode (node*) malloc(sizeof(node))
+using namespace std;
+typedef struct node {
+	int val;
+	struct node *left, *right;
+}node;
+void post(node *now,node *end) {
+	if (now != end) {
+		post(now->left, end);
+		post(now->right, end);
+		cout << now->val << '\n';
+	}
+}
+
+int main(void) {
+	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int n;
+	node *root, *end, *tmp, *cur;
+	cin >> n;
+	root = newNode;
+	end = newNode;
+	tmp = newNode;
+	root->left = root->right = tmp;
+	tmp->left = tmp->right = end->left = end->right = end;
+	tmp->val = n;
+	while (1) {
+		cin >> n;
+		if (cin.eof()) break;
+		cur = root->left;
+		while (1) {
+			if (cur->val > n) {
+				if (cur->left != end) cur = cur->left;
+				else {
+					tmp = newNode;
+					tmp->left = tmp->right = end;
+					cur->left = tmp;
+					tmp->val = n;
+					break;
+				}
+			}
+			else {
+				if (cur->right != end) cur = cur->right;
+				else {
+					tmp = newNode;
+					tmp->left = tmp->right = end;
+					cur->right = tmp;
+					tmp->val = n;
+					break;
+				}
+			}
+		}
+	}
+	post(root->left, end);
+	return 0;
+}
